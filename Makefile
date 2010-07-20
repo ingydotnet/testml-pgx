@@ -1,7 +1,10 @@
-all: grammar.json
+all: grammar.yaml grammar.json
 
 grammar.yaml: testml.grammar
 	python grammar.py $< > $@
 
 grammar.json: grammar.yaml
 	perl -MYAML::XS -MJSON::XS -e 'print encode_json YAML::XS::LoadFile("$<")' > $@
+
+clean:
+	rm -f grammar.yaml

@@ -20,123 +20,122 @@ def y(o):
     print yaml.dump(o, default_flow_style=False)
     return o
 
-sys.path.insert(0, '..')
-
-from cdent.grammar import *
-
 class GrammarModule():
-    def __init__(self, paths):
-        dict = {}
-        for path in paths:
-            dict.update(yaml.load(file(path)))
+    def __init__(self, input_path):
+        dict = yaml.load(file(input_path))
         self.grammar = {}
-        regexps = {}
-        atoms = yaml.load(file('grammar/atoms.yaml'))
-        for k in atoms:
-            v = atoms[k]
-            if v[0] != '/':
-                raise Exception("bad atom")
-            atoms[k] = v[1:-1]
         for k in dict:
-            v = dict[k]
-            t = v.__class__.__name__
-            if t == 'str' and v[0] == '/':
-                regexps[k] = v[1:-1]
-            else:
-                self.grammar[k] = v
+            self.grammar[k] = self.transform(dict[k])
+
+        # return   # without collapse regexps
+
+        self.final = {}
+
+        self.combinate_rule('document')
+
+    def combinate_rule(self, rule):
+        object = self.final[rule] = self.grammar[rule]
+        self.combinate_object(object)
+
+    def combinate_object(self, object):
+        if '+re' in object:
+            self.combinate_re(object)
+        elif '+rule' in object:
+            rule = object['+rule']
+            if rule in self.grammar:
+                self.combinate_rule(rule)
+        elif '+any' in object:
+            for elem in object['+any']:
+                self.combinate_object(elem)
+        elif '+all' in object:
+            for elem in object['+all']:
+                self.combinate_object(elem)
+        else:
+            raise Exception("Can't combinate: %s" % object)
+
+    def combinate_re(self, regexp):
         def f(m):
             n = m.groups()[0]
-            if n in atoms:
-                return atoms[n]
-            if n in regexps:
-                return regexps[n]
+            if n in self.grammar:
+                reo = self.grammar[n]
+                if '+re' in reo:
+                    return reo['+re']
             raise Exception("'%s' is not defined in the grammar" % n)
-        for k in regexps:
-            v = regexps[k]
-            while True:
-                v2 = re.sub(r'\$<?(\w+)>?', f, v)
-                if v2 == v:
-                    break
-                v = v2
-            self.grammar[k] = Re({'_': v})
-#         y(self.grammar)
-        for k in self.grammar:
-            self.grammar[k] = self.parse(self.grammar[k])
 
-    def parse(self, node):
-#         print "parse> " + repr(node)
-        t = node.__class__.__name__
+        while True:
+            regexp2 = re.sub(r'<(\w+)>', f, regexp['+re'])
+            if regexp2 == regexp['+re']:
+                break
+            regexp['+re'] = regexp2
+
+    def transform(self, v):
+        t = v.__class__.__name__
         if t == 'str':
-            return self.parse_str(node)
+            if v[0] == '/':
+                return self.re(v)
+            elif v[0] == '<':
+                return self.rule(v)
+            elif v[0] == '(':
+                if re.search(r'[>/]\s*[</]', v):
+                    return self.all_str(v)
+                elif re.search(r'[>/]\s*\|\s*[</]', v):
+                    return self.any_str(v)
+                else:
+                    raise Exception("'%s' is bad collection string" % v)
+            else:
+                raise Exception("'%s' is bad string" % v)
         elif t == 'list':
-            return self.parse_list(node)
-        elif t == 'dict':
-            return self.parse_dict(node)
+            return self.all(v)
         else:
-            return node
+            raise Exception("Unknown node: '%s'" % pprint.pformat(v, indent=2))
 
-    def parse_dict(self, dict):
-#         print "parse_dict> " + repr(dict)
-        obj = self.parse(dict['_'])
-        if 'x' in dict:
-            setattr(obj, 'x', dict['x'])
-        return obj
+    def re(self, str):
+        return { '+re': str[1:-1] }
 
-    def parse_list(self, list):
-#         print "parse_list> " + repr(list)
-        new = []
-        for e in list:
-            new.append(self.parse(e))
-        return All({'_': new})
+    def rule(self, str):
+        return { '+rule': str[1:-1] }
 
-    def parse_str(self, str):
-#         print "parse_str> " + repr(str)
-        d = {}
-        if str == 'indent':
-            return Indent({})
-        if str == 'undent':
-            return Undent({})
-        if str[-1] in '*+?':
-            d['x'] = str[-1]
+    def all_str(self, str):
+        l = []
+        all = {'+all': l }
+        if str[-1] in ['?', '*', '+']:
+            all['<'] = str[-1]
             str = str[0:-1]
-        if str[-1] == '!':
+
+        str = str[1:-1]
+        m = re.match(r'\s*((?:<!?\w+>)|(?:/.*?/))\s*', str)
+        while m:
+            l.append(self.transform(m.groups()[0]))
+            str = str[m.end():]
+            m = re.match(r'\s*((?:<!?\w+>)|(?:/.*?/))\s*', str)
+        return all
+
+    def any_str(self, str):
+        l = []
+        any = {'+any': l }
+        if str[-1] in ['?', '*', '+']:
+            any['<'] = str[-1]
             str = str[0:-1]
-            rule = self.parse(str)
-            rule.__dict__['!'] = True
-            return rule
-        elif str[0] == '(':
-            str = str[1:-1]
-            list = []
-            a = str.split('|')
-            for e in a:
-                list.append(self.parse(e))
-            d['_'] = list
-            return Any(d)
-        elif re.match(r'^\w+$', str):
-            d['_'] = str
-            return Rule(d)
-        else:
-            raise Exception("Failed to parse '%s'" % str)
 
-    def generate_module(self, lang):
-        Lang = lang[0].upper() + lang[1:]
-        data = pprint.pformat(self.grammar, indent=2)
+        str = str[1:-1]
+        m = re.match(r'\s*((?:<!?\w+>)|(?:/.*?/))\s*\|?\s*', str)
+        while m:
+            l.append(self.transform(m.groups()[0]))
+            str = str[m.end():]
+            m = re.match(r'\s*((?:<!?\w+>)|(?:/.*?/))\s*\|?\s*', str)
+        return any
 
-        module = """\
-\"\"\"
-C'Dent %(Lang)s parser grammar module.
-\"\"\"
+    def all(self, array):
+        l = []
+        all = {'+all': l}
+        if array[-1] in ['?', '*', '+']:
+            all['<'] = array.pop()
+        for elem in array:
+            l.append(self.transform(elem))
+        return all
 
-from cdent.grammar import *
-
-class Grammar():
-    def __init__(self):
-        self.__dict__.update(
-%(data)s
-)
-""" % locals()
- 
-        return module
+    def generate_yaml(self):
+        return yaml.dump(self.final, default_flow_style=False);
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:

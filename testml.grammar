@@ -1,4 +1,5 @@
 ---
+# Regexp Atoms
 ALWAYS: //        # Always match
 ANY: /[\s\S]/     # Any unicode character
 SPACE: /[\ \t]/   # A space or tab character
@@ -20,6 +21,7 @@ SINGLE: /'/       # A single quote character
 DOUBLE: /"/       # A double quote character
 ESCAPE: /[0nt]/   # One of the escapable character IDs
 
+# General Tokens
 line: /<NON_BREAK>*<EOL>/
 blank_line: /<SPACE>*<EOL>/
 comment: /<HASH><line>/
@@ -32,18 +34,19 @@ double_quoted_string: /(?:<DOUBLE>(([^<BREAK><BACK><DOUBLE>]|<BACK><DOUBLE>|<BAC
 
 unquoted_string: /[^<SPACES><BREAK><HASH>](?:[^<BREAK><HASH>]*[^<SPACES><BREAK><HASH>])?/
 
-TOP: <document>
 
+# TestML Document
 document:
 - <meta_section>
 - <test_section>
 - <data_section>?
 
+
+# TestML Meta Section
 meta_section:
 - /(?:<comment>|<blank_line>)*/
 - ( <meta_testml_statement> | <NO_META_TESTML_ERROR> )
 - ( <meta_statement> | <comment> | <blank_line> )
-
 
 meta_testml_statement: /%TestML:<SPACE>+(<testml_version>)(?:<SPACE>+<comment>|<EOL>)/
 
@@ -58,6 +61,7 @@ user_meta_keyword: /<LOWER><WORD>*/
 meta_value: /(?:<quoted_string>|<unquoted_string>)/
 
 
+# TestML Meta Section
 test_section: ( <ws> | <test_statement> )*
 
 test_statement:
@@ -112,7 +116,7 @@ transform_argument_list_start: <ALWAYS>
 transform_argument_list:
 - <transform_argument>
 - ( /<ws>*,<ws>*/ <transform_argument> )*
-- <?>
+- '?'
 
 transform_argument_list_stop: <ALWAYS>
 
@@ -138,6 +142,8 @@ assertion_function_call:
 
 assertion_function_name: /EQ/
 
+
+# TestML Data Section
 data_section: /(<block_marker>(?:<SPACE>|<EOL>)<ANY>+|\Z)/
 
 data: <data_block>*
