@@ -93,7 +93,12 @@ class GrammarModule():
         return { '+re': str[1:-1] }
 
     def rule(self, str):
-        return { '+rule': str[1:-1] }
+        rule = {}
+        if str[-1] in ['?', '*', '+']:
+            rule['<'] = str[-1]
+            str = str[0:-1]
+        rule['+rule'] = str[1:-1]
+        return rule
 
     def all_str(self, str):
         l = []

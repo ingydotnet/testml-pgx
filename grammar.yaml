@@ -2,6 +2,23 @@ ALWAYS:
   +re: ''
 SEMI:
   +re: ;
+assertion_call:
+  +any:
+  - +rule: assertion_operator_call
+  - +rule: assertion_function_call
+assertion_function_call:
+  +all:
+  - +re: (?:\.(?:[\ \t]|\r?\n|#.*\r?\n)*|(?:[\ \t]|\r?\n|#.*\r?\n)*\.)EQ\((?:[\ \t]|\r?\n|#.*\r?\n)*
+  - +rule: test_expression
+  - +re: (?:[\ \t]|\r?\n|#.*\r?\n)*\)
+assertion_operator:
+  +re: (==)
+assertion_operator_call:
+  +all:
+  - +re: (?:[\ \t]|\r?\n|#.*\r?\n)+
+  - +rule: assertion_operator
+  - +re: (?:[\ \t]|\r?\n|#.*\r?\n)+
+  - +rule: test_expression
 blank_line:
   +re: '[\ \t]*\r?\n'
 call_indicator:
@@ -12,11 +29,14 @@ constant_call:
   +re: ([A-Z]\w*)
 core_transform:
   +re: ([A-Z]\w*)
+data_section:
+  +re: (===(?:[\ \t]|\r?\n)[\s\S]+|\Z)
 document:
   +all:
   - +rule: meta_section
   - +rule: test_section
-  - +rule: data_section>
+  - +rule: data_section
+    <: '?'
 meta_section:
   +all:
   - +re: (?:#.*\r?\n|[\ \t]*\r?\n)*
@@ -27,6 +47,7 @@ meta_section:
     - +rule: meta_statement
     - +rule: comment
     - +rule: blank_line
+    <: '*'
 meta_statement:
   +re: '%((?:(?:Title|Data|Plan|BlockMarker|PointMarker)|[a-z]\w*)):[\ \t]+((?:(?:(?:''(([^\n\'']|\''|\\)*?)'')|(?:"(([^\n\"]|\"|\\|\[0nt])*?)"))|[^\
     \t\n#](?:[^\n#]*[^\ \t\n#])?))(?:[\ \t]+#.*\r?\n|\r?\n)'
@@ -61,10 +82,13 @@ test_statement:
   +all:
   - +rule: test_statement_start
   - +rule: test_expression
-  - +rule: assertion_call>
+  - +rule: assertion_call
+    <: '?'
   - +any:
     - +rule: SEMI
     - +rule: SEMICOLON_ERROR
+test_statement_start:
+  +rule: ALWAYS
 transform_argument_list_start:
   +rule: ALWAYS
 transform_argument_list_stop:

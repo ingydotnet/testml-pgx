@@ -46,7 +46,7 @@ document:
 meta_section:
 - /(?:<comment>|<blank_line>)*/
 - ( <meta_testml_statement> | <NO_META_TESTML_ERROR> )
-- ( <meta_statement> | <comment> | <blank_line> )
+- ( <meta_statement> | <comment> | <blank_line> )*
 
 meta_testml_statement: /%TestML:<SPACE>+(<testml_version>)(?:<SPACE>+<comment>|<EOL>)/
 
@@ -70,7 +70,7 @@ test_statement:
 - <assertion_call>?
 - ( <SEMI> | <SEMICOLON_ERROR> )
 
-token test_statement_start: <ALWAYS>
+test_statement_start: <ALWAYS>
 
 test_expression:
 - <sub_expression>
@@ -136,7 +136,7 @@ assertion_operator_call:
 assertion_operator: /(==)/
 
 assertion_function_call:
-- /<call_indicator><assertion_name>\(<ws>*/
+- /<call_indicator><assertion_function_name>\(<ws>*/
 - <test_expression>
 - /<ws>*\)/
 

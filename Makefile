@@ -1,6 +1,6 @@
 all: grammar.yaml grammar.json
 
-grammar.yaml: testml.grammar
+grammar.yaml: testml.grammar grammar.py
 	python grammar.py $< > $@
 
 grammar.json: grammar.yaml
