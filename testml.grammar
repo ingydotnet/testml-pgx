@@ -164,7 +164,8 @@ block_label: <unquoted_string>
 block_point: ( <lines_point> | <phrase_point> )
 
 lines_point:
-- /<point_marker><SPACE>+/
+- <point_marker>
+- /<SPACE>+/
 - <point_name>
 - /<SPACE>*<EOL>/
 - <point_lines>
@@ -172,7 +173,8 @@ lines_point:
 point_lines: /((?:(?!<block_marker>|<point_marker>)<line>)*)/
 
 phrase_point:
-- /<point_marker><SPACE>+/
+- <point_marker>
+- /<SPACE>+/
 - <point_name>
 - /:<SPACE>/
 - <point_phrase>

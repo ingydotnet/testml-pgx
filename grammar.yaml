@@ -73,7 +73,8 @@ double_quoted_string:
   +re: (?:"(([^\n\"]|\"|\\|\[0nt])*?)")
 lines_point:
   +all:
-  - +re: '---[\ \t]+'
+  - +rule: point_marker
+  - +re: '[\ \t]+'
   - +rule: point_name
   - +re: '[\ \t]*\r?\n'
   - +rule: point_lines
@@ -95,7 +96,8 @@ meta_testml_statement:
   +re: '%TestML:[\ \t]+(([0-9]\.[0-9]+))(?:[\ \t]+#.*\r?\n|\r?\n)'
 phrase_point:
   +all:
-  - +re: '---[\ \t]+'
+  - +rule: point_marker
+  - +re: '[\ \t]+'
   - +rule: point_name
   - +re: :[\ \t]
   - +rule: point_phrase
@@ -105,6 +107,8 @@ point_call:
   +re: (\*[a-z]\w*)
 point_lines:
   +re: ((?:(?!===|---).*\r?\n)*)
+point_marker:
+  +re: '---'
 point_name:
   +any:
   - +rule: core_point_name
