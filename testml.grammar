@@ -94,7 +94,7 @@ transform_call:
 - /\(/
 - <transform_argument_list_start>
 - /<ws>*/
-- <argument_list>
+- <transform_argument_list>
 - /<ws>*/
 - <transform_argument_list_stop>
 - /\)/

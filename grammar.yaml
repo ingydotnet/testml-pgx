@@ -89,6 +89,16 @@ test_statement:
     - +rule: SEMICOLON_ERROR
 test_statement_start:
   +rule: ALWAYS
+transform_argument:
+  +rule: sub_expression
+transform_argument_list:
+  +all:
+  - +rule: transform_argument
+  - +all:
+    - +re: (?:[\ \t]|\r?\n|#.*\r?\n)*,(?:[\ \t]|\r?\n|#.*\r?\n)*
+    - +rule: transform_argument
+    <: '*'
+  <: '?'
 transform_argument_list_start:
   +rule: ALWAYS
 transform_argument_list_stop:
@@ -99,7 +109,7 @@ transform_call:
   - +re: \(
   - +rule: transform_argument_list_start
   - +re: (?:[\ \t]|\r?\n|#.*\r?\n)*
-  - +rule: argument_list
+  - +rule: transform_argument_list
   - +re: (?:[\ \t]|\r?\n|#.*\r?\n)*
   - +rule: transform_argument_list_stop
   - +re: \)

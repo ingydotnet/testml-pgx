@@ -34,6 +34,8 @@ class GrammarModule():
         self.combinate_rule('document')
 
     def combinate_rule(self, rule):
+        if rule in self.final:
+            return
         object = self.final[rule] = self.grammar[rule]
         self.combinate_object(object)
 
