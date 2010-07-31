@@ -66,12 +66,9 @@ meta_value: /<unquoted_string>/
 test_section: ( <ws> | <test_statement> )*
 
 test_statement:
-- <test_statement_start>
 - <test_expression>
 - <assertion_call>?
 - ( <SEMI> | <SEMICOLON_ERROR> )
-
-test_statement_start: <ALWAYS>
 
 test_expression:
 - <sub_expression>
@@ -82,23 +79,16 @@ test_expression:
   )*
 
 sub_expression: (
-    <transform_call> |
     <point_call> |
     <string_call> |
-    <constant_call>
+    <transform_call>
   )
 
 string_call: <quoted_string>
 
 transform_call:
 - <transform_name>
-- /\(/
-- <transform_argument_list_start>
-- /<ws>*/
-- <transform_argument_list>
-- /<ws>*/
-- <transform_argument_list_stop>
-- /\)/
+- <transform_argument_list>?
 
 transform_name: ( <user_transform> | <core_transform> )
 
@@ -112,14 +102,16 @@ point_call: /(<STAR><LOWER><WORD>*)/
 
 constant_call: /(<UPPER><WORD>*)/
 
-transform_argument_list_start: <ALWAYS>
-
 transform_argument_list:
+- /\(/
+- /<ws>*/
+- <transform_arguments>?
+- /<ws>*/
+- /\)/
+
+transform_arguments:
 - <transform_argument>
 - ( /<ws>*,<ws>*/ <transform_argument> )*
-- '?'
-
-transform_argument_list_stop: <ALWAYS>
 
 transform_argument: <sub_expression>
 

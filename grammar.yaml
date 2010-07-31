@@ -45,8 +45,6 @@ call_indicator:
   +re: (?:\.(?:[\ \t]|\r?\n|#.*\r?\n)*|(?:[\ \t]|\r?\n|#.*\r?\n)*\.)
 comment:
   +re: '#.*\r?\n'
-constant_call:
-  +re: ([A-Z]\w*)
 core_point_name:
   +re: ([A-Z]\w*)
 core_transform:
@@ -125,10 +123,9 @@ string_call:
   +rule: quoted_string
 sub_expression:
   +any:
-  - +rule: transform_call
   - +rule: point_call
   - +rule: string_call
-  - +rule: constant_call
+  - +rule: transform_call
 test_expression:
   +all:
   - +rule: sub_expression
@@ -144,39 +141,34 @@ test_section:
   <: '*'
 test_statement:
   +all:
-  - +rule: test_statement_start
   - +rule: test_expression
   - +rule: assertion_call
     <: '?'
   - +any:
     - +rule: SEMI
     - +rule: SEMICOLON_ERROR
-test_statement_start:
-  +rule: ALWAYS
 transform_argument:
   +rule: sub_expression
 transform_argument_list:
+  +all:
+  - +re: \(
+  - +re: (?:[\ \t]|\r?\n|#.*\r?\n)*
+  - +rule: transform_arguments
+    <: '?'
+  - +re: (?:[\ \t]|\r?\n|#.*\r?\n)*
+  - +re: \)
+transform_arguments:
   +all:
   - +rule: transform_argument
   - +all:
     - +re: (?:[\ \t]|\r?\n|#.*\r?\n)*,(?:[\ \t]|\r?\n|#.*\r?\n)*
     - +rule: transform_argument
     <: '*'
-  <: '?'
-transform_argument_list_start:
-  +rule: ALWAYS
-transform_argument_list_stop:
-  +rule: ALWAYS
 transform_call:
   +all:
   - +rule: transform_name
-  - +re: \(
-  - +rule: transform_argument_list_start
-  - +re: (?:[\ \t]|\r?\n|#.*\r?\n)*
   - +rule: transform_argument_list
-  - +re: (?:[\ \t]|\r?\n|#.*\r?\n)*
-  - +rule: transform_argument_list_stop
-  - +re: \)
+    <: '?'
 transform_name:
   +any:
   - +rule: user_transform
