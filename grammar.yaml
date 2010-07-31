@@ -133,7 +133,7 @@ test_expression:
   +all:
   - +rule: sub_expression
   - +all:
-    - +rule: '!assertion_function_call'
+    - +not: assertion_function_call
     - +rule: call_indicator
     - +rule: sub_expression
     <: '*'

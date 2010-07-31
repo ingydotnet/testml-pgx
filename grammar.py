@@ -32,6 +32,7 @@ class GrammarModule():
         self.final = {}
 
         self.combinate_rule('document')
+#         self.final = self.grammar
 
     def combinate_rule(self, rule):
         if rule in self.final:
@@ -44,6 +45,10 @@ class GrammarModule():
             self.combinate_re(object)
         elif '+rule' in object:
             rule = object['+rule']
+            if rule in self.grammar:
+                self.combinate_rule(rule)
+        elif '+not' in object:
+            rule = object['+not']
             if rule in self.grammar:
                 self.combinate_rule(rule)
         elif '+any' in object:
@@ -99,7 +104,11 @@ class GrammarModule():
         if str[-1] in ['?', '*', '+']:
             rule['<'] = str[-1]
             str = str[0:-1]
-        rule['+rule'] = str[1:-1]
+        str = str[1:-1]
+        if str[0] == '!':
+            rule['+not'] = str[1:]
+        else:
+            rule['+rule'] = str
         return rule
 
     def all_str(self, str):
