@@ -67,7 +67,10 @@ class GrammarModule():
                 reo = self.grammar[n]
                 if '+re' in reo:
                     return reo['+re']
-            raise Exception("'%s' is not defined in the grammar" % n)
+                else:
+                    raise Exception("'%s' is not a regex" % n)
+            else:
+                raise Exception("'%s' is not defined in the grammar" % n)
 
         while True:
             regexp2 = re.sub(r'<(\w+)>', f, regexp['+re'])
