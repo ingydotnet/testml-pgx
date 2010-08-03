@@ -12,8 +12,7 @@ assertion_call:
   - +rule: assertion_ok
   - +rule: assertion_has
 assertion_call_test:
-  +re: (?:(?:(?:[\ \t]|\r?\n|#.*\r?\n)+(?:==|~~)(?:[\ \t]|\r?\n|#.*\r?\n)+)|(?:\.(?:[\
-    \t]|\r?\n|#.*\r?\n)*|(?:[\ \t]|\r?\n|#.*\r?\n)*\.)(?:EQ|OK|HAS)\()
+  +re: (?:\.(?:[\ \t]|\r?\n|#.*\r?\n)*|(?:[\ \t]|\r?\n|#.*\r?\n)*\.)(?:EQ|OK|HAS)\(
 assertion_eq:
   +any:
   - +rule: assertion_operator_eq

@@ -121,7 +121,7 @@ transform_arguments:
 
 transform_argument: <sub_expression>
 
-assertion_call_test: /(?:(?:<ws>+(?:<EQUAL><EQUAL>|<TILDE><TILDE>)<ws>+)|<call_indicator>(?:EQ|OK|HAS)<LPAREN>)/
+assertion_call_test: /<call_indicator>(?:EQ|OK|HAS)<LPAREN>/
 
 assertion_call: (
     <assertion_eq> |
