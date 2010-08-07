@@ -1,9 +1,16 @@
+# TestML Document
+document: 
+  <meta_section>
+  <test_section>
+  <data_section>?
+
+
 # General Tokens
 escape: /[0nt]/
 line: /<ANY>*<EOL>/
 blank_line: /<SPACE>*<EOL>/
 comment: /<HASH><line>/
-ws: /[<SPACE>|<EOL>|<comment>]/
+ws: /(?:<SPACE>|<EOL>|<comment>)/
 
 quoted_string: <single_quoted_string> | <double_quoted_string>
 
@@ -11,14 +18,7 @@ single_quoted_string: /(?:<SINGLE>(([^<BREAK><BACK><SINGLE>]|<BACK><SINGLE>|<BAC
 
 double_quoted_string: /(?:<DOUBLE>(([^<BREAK><BACK><DOUBLE>]|<BACK><DOUBLE>|<BACK><BACK>|<BACK><escape>)*?)<DOUBLE>)/
 
-unquoted_string: /([^<SPACES><BREAK><HASH>][^<BREAK><HASH>]*[^<SPACES><BREAK><HASH>])?)/
-
-
-# TestML Document
-document: 
-  <meta_section>
-  <test_section>
-  <data_section>?
+unquoted_string: /([^<SPACES><BREAK><HASH>](?:[^<BREAK><HASH>]*[^<SPACES><BREAK><HASH>])?)/
 
 
 # TestML Meta Section
@@ -27,11 +27,11 @@ meta_section:
   [ <meta_testml_statement> | `No TestML meta directive found` ]
   [ <meta_statement> | <comment> | <blank_line> ]*
 
-meta_testml_statement: /%TestML:<SPACE>+(<testml_version>)(?:<SPACE>+<comment>|<EOL>)/
+meta_testml_statement: /<PERCENT>TestML:<SPACE>+(<testml_version>)(?:<SPACE>+<comment>|<EOL>)/
 
 testml_version: /(<DIGIT><DOT><DIGIT>+)/
 
-meta_statement: /%(<meta_keyword>):<SPACE>+(<meta_value>)(?:<SPACE>+<comment>|<EOL>)/
+meta_statement: /<PERCENT>(<meta_keyword>):<SPACE>+(<meta_value>)(?:<SPACE>+<comment>|<EOL>)/
 
 meta_keyword: /(?:<core_meta_keyword>|<user_meta_keyword>)/
 core_meta_keyword: /(?:Title|Data|Plan|BlockMarker|PointMarker)/
@@ -46,7 +46,7 @@ test_section: [ <ws> | <test_statement> ]*
 test_statement:
   <test_expression>
   <assertion_call>?
-  [ <SEMI> | `You seem to be missing a semicolon` ]
+  [ /<SEMI>/ | `You seem to be missing a semicolon` ]
 
 test_expression:
   <sub_expression>

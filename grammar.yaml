@@ -1,11 +1,4 @@
-ALWAYS:
-  +re: ''
-NO_META_TESTML_ERROR:
-  +rule: ALWAYS
-SEMI:
-  +re: ;
-SEMICOLON_ERROR:
-  +rule: ALWAYS
+---
 assertion_call:
   +any:
   - +rule: assertion_eq
@@ -104,7 +97,7 @@ meta_section:
   - +re: (?:#.*\r?\n|[\ \t]*\r?\n)*
   - +any:
     - +rule: meta_testml_statement
-    - +rule: NO_META_TESTML_ERROR
+    - +error: No TestML meta directive found
   - +any:
     - +rule: meta_statement
     - +rule: comment
@@ -167,7 +160,7 @@ test_statement:
     <: '?'
   - +any:
     - +rule: SEMI
-    - +rule: SEMICOLON_ERROR
+    - +error: You seem to be missing a semicolon
 testml_data_section:
   +rule: data_block
   <: '*'
@@ -205,4 +198,3 @@ xml_data_section:
   +re: (<.+)
 yaml_data_section:
   +re: (---[\ \t]*\r?\n.+)
-
