@@ -8,9 +8,9 @@ document:
 # General Tokens
 escape: /[0nt]/
 line: /<ANY>*<EOL>/
-blank_line: /<SPACE>*<EOL>/
+blank_line: /<BLANK>*<EOL>/
 comment: /<HASH><line>/
-ws: /(?:<SPACE>|<EOL>|<comment>)/
+ws: /(?:<BLANK>|<EOL>|<comment>)/
 
 quoted_string: <single_quoted_string> | <double_quoted_string>
 
@@ -18,7 +18,7 @@ single_quoted_string: /(?:<SINGLE>(([^<BREAK><BACK><SINGLE>]|<BACK><SINGLE>|<BAC
 
 double_quoted_string: /(?:<DOUBLE>(([^<BREAK><BACK><DOUBLE>]|<BACK><DOUBLE>|<BACK><BACK>|<BACK><escape>)*?)<DOUBLE>)/
 
-unquoted_string: /([^<SPACES><BREAK><HASH>](?:[^<BREAK><HASH>]*[^<SPACES><BREAK><HASH>])?)/
+unquoted_string: /([^<BLANKS><BREAK><HASH>](?:[^<BREAK><HASH>]*[^<BLANKS><BREAK><HASH>])?)/
 
 
 # TestML Meta Section
@@ -27,11 +27,11 @@ meta_section:
   [ <meta_testml_statement> | `No TestML meta directive found` ]
   [ <meta_statement> | <comment> | <blank_line> ]*
 
-meta_testml_statement: /<PERCENT>TestML:<SPACE>+(<testml_version>)(?:<SPACE>+<comment>|<EOL>)/
+meta_testml_statement: /<PERCENT>TestML:<BLANK>+(<testml_version>)(?:<BLANK>+<comment>|<EOL>)/
 
 testml_version: /(<DIGIT><DOT><DIGIT>+)/
 
-meta_statement: /<PERCENT>(<meta_keyword>):<SPACE>+(<meta_value>)(?:<SPACE>+<comment>|<EOL>)/
+meta_statement: /<PERCENT>(<meta_keyword>):<BLANK>+(<meta_value>)(?:<BLANK>+<comment>|<EOL>)/
 
 meta_keyword: /(?:<core_meta_keyword>|<user_meta_keyword>)/
 core_meta_keyword: /(?:Title|Data|Plan|BlockMarker|PointMarker)/
@@ -129,7 +129,7 @@ data_section:
 
 testml_data_section: <data_block>*
 
-yaml_data_section: /(<DASH><DASH><DASH><SPACE>*<EOL><rest>)/
+yaml_data_section: /(<DASH><DASH><DASH><BLANK>*<EOL><rest>)/
 
 json_data_section: /(<LSQUARE><rest>)/
 
@@ -144,8 +144,8 @@ data_block:
 
 block_header:
   <block_marker>
-  [ /<SPACE>+/ <block_label> ]?
-  /<SPACE>*<EOL>/
+  [ /<BLANK>+/ <block_label> ]?
+  /<BLANK>*<EOL>/
 
 block_marker: /<EQUAL><EQUAL><EQUAL>/
 
@@ -155,18 +155,18 @@ block_point: <lines_point> | <phrase_point>
 
 lines_point:
   <point_marker>
-  /<SPACE>+/
+  /<BLANK>+/
   <point_name>
-  /<SPACE>*<EOL>/
+  /<BLANK>*<EOL>/
   <point_lines>
 
 point_lines: /((?:(?!<block_marker>|<point_marker>)<line>)*)/
 
 phrase_point:
   <point_marker>
-  /<SPACE>+/
+  /<BLANK>+/
   <point_name>
-  /<COLON><SPACE>/
+  /<COLON><BLANK>/
   <point_phrase>
   /<EOL>/
   /(?:<comment>|<blank_line>)*/
