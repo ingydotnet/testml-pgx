@@ -1,7 +1,5 @@
 ---
 _FIRST_RULE: document
-assertion_bareword:
-  +re: OK
 assertion_call:
   +any:
   - +rule: assertion_eq
@@ -185,7 +183,6 @@ transform_arguments:
     <: '*'
 transform_call:
   +all:
-  - +not: assertion_bareword
   - +rule: transform_name
   - +rule: transform_argument_list
     <: '?'

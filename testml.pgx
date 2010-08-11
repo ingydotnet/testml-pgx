@@ -66,11 +66,8 @@ point_call: /(<STAR><LOWER><WORD>*)/
 string_call: <quoted_string>
 
 transform_call:
-  <!assertion_bareword>
   <transform_name>
   <transform_argument_list>?
-
-assertion_bareword: /OK/
 
 transform_name: <user_transform> | <core_transform>
 
