@@ -1,27 +1,31 @@
 ---
+_FIRST_RULE: document
+assertion_bareword:
+  +re: OK
 assertion_call:
   +any:
   - +rule: assertion_eq
   - +rule: assertion_ok
   - +rule: assertion_has
 assertion_call_test:
-  +re: (?:\.(?:[\ \t]|\r?\n|#.*\r?\n)*|(?:[\ \t]|\r?\n|#.*\r?\n)*\.)(?:EQ|OK|HAS)\(
+  +re: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)(?:EQ|OK|HAS)
 assertion_eq:
   +any:
   - +rule: assertion_operator_eq
   - +rule: assertion_function_eq
 assertion_function_eq:
   +all:
-  - +re: (?:\.(?:[\ \t]|\r?\n|#.*\r?\n)*|(?:[\ \t]|\r?\n|#.*\r?\n)*\.)EQ\(
+  - +re: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)EQ\(
   - +rule: test_expression
   - +re: \)
 assertion_function_has:
   +all:
-  - +re: (?:\.(?:[\ \t]|\r?\n|#.*\r?\n)*|(?:[\ \t]|\r?\n|#.*\r?\n)*\.)HAS\(
+  - +re: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)HAS\(
   - +rule: test_expression
   - +re: \)
 assertion_function_ok:
-  +re: (?:\.(?:[\ \t]|\r?\n|#.*\r?\n)*|(?:[\ \t]|\r?\n|#.*\r?\n)*\.)OK(?:\((?:[\ \t]|\r?\n|#.*\r?\n)*\))?
+  +re: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)OK(?:\((?:[\
+    \t]|\r?\n|\#.*\r?\n)*\))?
 assertion_has:
   +any:
   - +rule: assertion_operator_has
@@ -30,11 +34,11 @@ assertion_ok:
   +rule: assertion_function_ok
 assertion_operator_eq:
   +all:
-  - +re: (?:[\ \t]|\r?\n|#.*\r?\n)+==(?:[\ \t]|\r?\n|#.*\r?\n)+
+  - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)+==(?:[\ \t]|\r?\n|\#.*\r?\n)+
   - +rule: test_expression
 assertion_operator_has:
   +all:
-  - +re: (?:[\ \t]|\r?\n|#.*\r?\n)+~~(?:[\ \t]|\r?\n|#.*\r?\n)+
+  - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)+~~(?:[\ \t]|\r?\n|\#.*\r?\n)+
   - +rule: test_expression
 blank_line:
   +re: '[\ \t]*\r?\n'
@@ -55,9 +59,9 @@ block_point:
   - +rule: lines_point
   - +rule: phrase_point
 call_indicator:
-  +re: (?:\.(?:[\ \t]|\r?\n|#.*\r?\n)*|(?:[\ \t]|\r?\n|#.*\r?\n)*\.)
+  +re: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)
 comment:
-  +re: '#.*\r?\n'
+  +re: \#.*\r?\n
 core_transform:
   +re: ([A-Z]\w*)
 data_block:
@@ -94,7 +98,7 @@ lines_point:
   - +rule: point_lines
 meta_section:
   +all:
-  - +re: (?:#.*\r?\n|[\ \t]*\r?\n)*
+  - +re: (?:\#.*\r?\n|[\ \t]*\r?\n)*
   - +any:
     - +rule: meta_testml_statement
     - +error: No TestML meta directive found
@@ -105,9 +109,9 @@ meta_section:
     <: '*'
 meta_statement:
   +re: '%((?:(?:Title|Data|Plan|BlockMarker|PointMarker)|[a-z]\w*)):[\ \t]+((?:(?:''(([^\n\\'']|\\''|\\\\)*?)'')|(?:"(([^\n\\"]|\\"|\\\\|\\[0nt])*?)")|([^\
-    \t\n#](?:[^\n#]*[^\ \t\n#])?)))(?:[\ \t]+#.*\r?\n|\r?\n)'
+    \t\n\#](?:[^\n\#]*[^\ \t\n\#])?)))(?:[\ \t]+\#.*\r?\n|\r?\n)'
 meta_testml_statement:
-  +re: '%TestML:[\ \t]+(([0-9]\.[0-9]+))(?:[\ \t]+#.*\r?\n|\r?\n)'
+  +re: '%TestML:[\ \t]+(([0-9]\.[0-9]+))(?:[\ \t]+\#.*\r?\n|\r?\n)'
 phrase_point:
   +all:
   - +rule: point_marker
@@ -116,7 +120,7 @@ phrase_point:
   - +re: :[\ \t]
   - +rule: point_phrase
   - +re: \r?\n
-  - +re: (?:#.*\r?\n|[\ \t]*\r?\n)*
+  - +re: (?:\#.*\r?\n|[\ \t]*\r?\n)*
 point_call:
   +re: (\*[a-z]\w*)
 point_lines:
@@ -126,7 +130,7 @@ point_marker:
 point_name:
   +re: ([a-z]\w*)
 point_phrase:
-  +re: (([^\ \t\n#](?:[^\n#]*[^\ \t\n#])?))
+  +re: (([^\ \t\n\#](?:[^\n\#]*[^\ \t\n\#])?))
 quoted_string:
   +any:
   - +rule: single_quoted_string
@@ -159,7 +163,7 @@ test_statement:
   - +rule: assertion_call
     <: '?'
   - +any:
-    - +rule: SEMI
+    - +re: ;
     - +error: You seem to be missing a semicolon
 testml_data_section:
   +rule: data_block
@@ -168,19 +172,20 @@ transform_argument:
   +rule: sub_expression
 transform_argument_list:
   +all:
-  - +re: \((?:[\ \t]|\r?\n|#.*\r?\n)*
+  - +re: \((?:[\ \t]|\r?\n|\#.*\r?\n)*
   - +rule: transform_arguments
     <: '?'
-  - +re: (?:[\ \t]|\r?\n|#.*\r?\n)*\)
+  - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
 transform_arguments:
   +all:
   - +rule: transform_argument
   - +all:
-    - +re: (?:[\ \t]|\r?\n|#.*\r?\n)*,(?:[\ \t]|\r?\n|#.*\r?\n)*
+    - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
     - +rule: transform_argument
     <: '*'
 transform_call:
   +all:
+  - +not: assertion_bareword
   - +rule: transform_name
   - +rule: transform_argument_list
     <: '?'
@@ -189,11 +194,11 @@ transform_name:
   - +rule: user_transform
   - +rule: core_transform
 unquoted_string:
-  +re: ([^\ \t\n#](?:[^\n#]*[^\ \t\n#])?)
+  +re: ([^\ \t\n\#](?:[^\n\#]*[^\ \t\n\#])?)
 user_transform:
   +re: ([a-z]\w*)
 ws:
-  +re: (?:[\ \t]|\r?\n|#.*\r?\n)
+  +re: (?:[\ \t]|\r?\n|\#.*\r?\n)
 xml_data_section:
   +re: (<.+)
 yaml_data_section:

@@ -66,8 +66,11 @@ point_call: /(<STAR><LOWER><WORD>*)/
 string_call: <quoted_string>
 
 transform_call:
+  <!assertion_bareword>
   <transform_name>
   <transform_argument_list>?
+
+assertion_bareword: /OK/
 
 transform_name: <user_transform> | <core_transform>
 
@@ -88,7 +91,7 @@ transform_arguments:
 
 transform_argument: <sub_expression>
 
-assertion_call_test: /<call_indicator>(?:EQ|OK|HAS)<LPAREN>/
+assertion_call_test: /<call_indicator>(?:EQ|OK|HAS)/
 
 assertion_call: <assertion_eq> | <assertion_ok> | <assertion_has>
 
