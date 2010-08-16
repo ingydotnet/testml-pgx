@@ -1,15 +1,15 @@
-all: grammar.yaml grammar.json
+all: testml.pgx.yaml testml.pgx.json
 
-export PERL5LIB=$(HOME)/src/parse-pegex-pm/lib
+# export PERL5LIB=$(HOME)/src/parse-pegex-pm/lib
 
 TO_YAML = perl -MPegex::Compiler -e 'print Pegex::Compiler->grammar_file_to_yaml(shift)'
 TO_JSON = perl -MYAML::XS -MJSON::XS -e 'print encode_json YAML::XS::LoadFile(shift)'
 
-grammar.yaml: testml.pgx Makefile
+testml.pgx.yaml: testml.pgx Makefile
 	$(TO_YAML) $< > $@
 
-grammar.json: grammar.yaml
+testml.pgx.json: testml.pgx.yaml
 	 $(TO_JSON) $< > $@
 
 clean:
-	rm -f grammar.yaml
+	rm -f testml.pgx.*
