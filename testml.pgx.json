@@ -1,1 +1,451 @@
-{"point_name":{"+re":"([a-z]\\w*)"},"assertion_operator_has":{"+all":[{"+re":"(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+~~(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"},{"+rule":"test_expression"}]},"document":{"+all":[{"+rule":"meta_section"},{"+rule":"test_section"},{"<":"?","+rule":"data_section"}]},"transform_arguments":{"+all":[{"+rule":"transform_argument"},{"+all":[{"+re":"(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"},{"+rule":"transform_argument"}],"<":"*"}]},"point_phrase":{"+re":"(([^\\ \\t\\n\\#](?:[^\\n\\#]*[^\\ \\t\\n\\#])?))"},"point_lines":{"+re":"((?:(?!===|---).*\\r?\\n)*)"},"assertion_function_has":{"+all":[{"+re":"(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)HAS\\("},{"+rule":"test_expression"},{"+re":"\\)"}]},"point_marker":{"+re":"---"},"block_header":{"+all":[{"+rule":"block_marker"},{"+all":[{"+re":"[\\ \\t]+"},{"+rule":"block_label"}],"<":"?"},{"+re":"[\\ \\t]*\\r?\\n"}]},"test_expression":{"+all":[{"+rule":"sub_expression"},{"+all":[{"+not":"assertion_call_test"},{"+rule":"call_indicator"},{"+rule":"sub_expression"}],"<":"*"}]},"xml_data_section":{"+re":"(<.+)"},"sub_expression":{"+any":[{"+rule":"point_call"},{"+rule":"string_call"},{"+rule":"transform_call"}]},"unquoted_string":{"+re":"([^\\ \\t\\n\\#](?:[^\\n\\#]*[^\\ \\t\\n\\#])?)"},"testml_data_section":{"<":"*","+rule":"data_block"},"json_data_section":{"+re":"(\\[.+)"},"yaml_data_section":{"+re":"(---[\\ \\t]*\\r?\\n.+)"},"assertion_has":{"+any":[{"+rule":"assertion_operator_has"},{"+rule":"assertion_function_has"}]},"meta_section":{"+all":[{"+re":"(?:\\#.*\\r?\\n|[\\ \\t]*\\r?\\n)*"},{"+any":[{"+rule":"meta_testml_statement"},{"+error":"No TestML meta directive found"}]},{"+any":[{"+rule":"meta_statement"},{"+rule":"comment"},{"+rule":"blank_line"}],"<":"*"}]},"assertion_operator_eq":{"+all":[{"+re":"(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+==(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"},{"+rule":"test_expression"}]},"block_marker":{"+re":"==="},"lines_point":{"+all":[{"+rule":"point_marker"},{"+re":"[\\ \\t]+"},{"+rule":"point_name"},{"+re":"[\\ \\t]*\\r?\\n"},{"+rule":"point_lines"}]},"user_transform":{"+re":"([a-z]\\w*)"},"data_block":{"+all":[{"+rule":"block_header"},{"+any":[{"+rule":"blank_line"},{"+rule":"comment"}],"<":"*"},{"<":"*","+rule":"block_point"}]},"_FIRST_RULE":"document","test_statement":{"+all":[{"+rule":"test_expression"},{"<":"?","+rule":"assertion_call"},{"+any":[{"+re":";"},{"+error":"You seem to be missing a semicolon"}]}]},"test_section":{"+any":[{"+rule":"ws"},{"+rule":"test_statement"}],"<":"*"},"transform_name":{"+any":[{"+rule":"user_transform"},{"+rule":"core_transform"}]},"data_section":{"+any":[{"+rule":"testml_data_section"},{"+rule":"yaml_data_section"},{"+rule":"json_data_section"},{"+rule":"xml_data_section"}]},"ws":{"+re":"(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)"},"assertion_function_ok":{"+re":"(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)OK(?:\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\))?"},"blank_line":{"+re":"[\\ \\t]*\\r?\\n"},"block_label":{"+rule":"unquoted_string"},"single_quoted_string":{"+re":"(?:'(([^\\n\\\\']|\\\\'|\\\\\\\\)*?)')"},"assertion_call_test":{"+re":"(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)(?:EQ|OK|HAS)"},"phrase_point":{"+all":[{"+rule":"point_marker"},{"+re":"[\\ \\t]+"},{"+rule":"point_name"},{"+re":":[\\ \\t]"},{"+rule":"point_phrase"},{"+re":"\\r?\\n"},{"+re":"(?:\\#.*\\r?\\n|[\\ \\t]*\\r?\\n)*"}]},"call_indicator":{"+re":"(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)"},"assertion_eq":{"+any":[{"+rule":"assertion_operator_eq"},{"+rule":"assertion_function_eq"}]},"core_transform":{"+re":"([A-Z]\\w*)"},"transform_argument_list":{"+all":[{"+re":"\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"},{"<":"?","+rule":"transform_arguments"},{"+re":"(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\)"}]},"transform_call":{"+all":[{"+rule":"transform_name"},{"<":"?","+rule":"transform_argument_list"}]},"string_call":{"+rule":"quoted_string"},"assertion_call":{"+any":[{"+rule":"assertion_eq"},{"+rule":"assertion_ok"},{"+rule":"assertion_has"}]},"meta_testml_statement":{"+re":"%TestML:[\\ \\t]+(([0-9]\\.[0-9]+))(?:[\\ \\t]+\\#.*\\r?\\n|\\r?\\n)"},"quoted_string":{"+any":[{"+rule":"single_quoted_string"},{"+rule":"double_quoted_string"}]},"transform_argument":{"+rule":"sub_expression"},"assertion_ok":{"+rule":"assertion_function_ok"},"comment":{"+re":"\\#.*\\r?\\n"},"block_point":{"+any":[{"+rule":"lines_point"},{"+rule":"phrase_point"}]},"assertion_function_eq":{"+all":[{"+re":"(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)EQ\\("},{"+rule":"test_expression"},{"+re":"\\)"}]},"double_quoted_string":{"+re":"(?:\"(([^\\n\\\\\"]|\\\\\"|\\\\\\\\|\\\\[0nt])*?)\")"},"meta_statement":{"+re":"%((?:(?:Title|Data|Plan|BlockMarker|PointMarker)|[a-z]\\w*)):[\\ \\t]+((?:(?:'(([^\\n\\\\']|\\\\'|\\\\\\\\)*?)')|(?:\"(([^\\n\\\\\"]|\\\\\"|\\\\\\\\|\\\\[0nt])*?)\")|([^\\ \\t\\n\\#](?:[^\\n\\#]*[^\\ \\t\\n\\#])?)))(?:[\\ \\t]+\\#.*\\r?\\n|\\r?\\n)"},"point_call":{"+re":"(\\*[a-z]\\w*)"}}
+{
+   "_FIRST_RULE" : "document",
+   "assertion_call" : {
+      "+any" : [
+         {
+            "+rule" : "assertion_eq"
+         },
+         {
+            "+rule" : "assertion_ok"
+         },
+         {
+            "+rule" : "assertion_has"
+         }
+      ]
+   },
+   "assertion_call_test" : {
+      "+re" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)(?:EQ|OK|HAS)"
+   },
+   "assertion_eq" : {
+      "+any" : [
+         {
+            "+rule" : "assertion_operator_eq"
+         },
+         {
+            "+rule" : "assertion_function_eq"
+         }
+      ]
+   },
+   "assertion_function_eq" : {
+      "+all" : [
+         {
+            "+re" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)EQ\\("
+         },
+         {
+            "+rule" : "test_expression"
+         },
+         {
+            "+re" : "\\)"
+         }
+      ]
+   },
+   "assertion_function_has" : {
+      "+all" : [
+         {
+            "+re" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)HAS\\("
+         },
+         {
+            "+rule" : "test_expression"
+         },
+         {
+            "+re" : "\\)"
+         }
+      ]
+   },
+   "assertion_function_ok" : {
+      "+re" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)OK(?:\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\))?"
+   },
+   "assertion_has" : {
+      "+any" : [
+         {
+            "+rule" : "assertion_operator_has"
+         },
+         {
+            "+rule" : "assertion_function_has"
+         }
+      ]
+   },
+   "assertion_ok" : {
+      "+rule" : "assertion_function_ok"
+   },
+   "assertion_operator_eq" : {
+      "+all" : [
+         {
+            "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+==(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
+         },
+         {
+            "+rule" : "test_expression"
+         }
+      ]
+   },
+   "assertion_operator_has" : {
+      "+all" : [
+         {
+            "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+~~(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
+         },
+         {
+            "+rule" : "test_expression"
+         }
+      ]
+   },
+   "blank_line" : {
+      "+re" : "[\\ \\t]*\\r?\\n"
+   },
+   "block_header" : {
+      "+all" : [
+         {
+            "+rule" : "block_marker"
+         },
+         {
+            "+all" : [
+               {
+                  "+re" : "[\\ \\t]+"
+               },
+               {
+                  "+rule" : "block_label"
+               }
+            ],
+            "<" : "?"
+         },
+         {
+            "+re" : "[\\ \\t]*\\r?\\n"
+         }
+      ]
+   },
+   "block_label" : {
+      "+rule" : "unquoted_string"
+   },
+   "block_marker" : {
+      "+re" : "==="
+   },
+   "block_point" : {
+      "+any" : [
+         {
+            "+rule" : "lines_point"
+         },
+         {
+            "+rule" : "phrase_point"
+         }
+      ]
+   },
+   "call_indicator" : {
+      "+re" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)"
+   },
+   "comment" : {
+      "+re" : "\\#.*\\r?\\n"
+   },
+   "core_transform" : {
+      "+re" : "([A-Z]\\w*)"
+   },
+   "data_block" : {
+      "+all" : [
+         {
+            "+rule" : "block_header"
+         },
+         {
+            "+any" : [
+               {
+                  "+rule" : "blank_line"
+               },
+               {
+                  "+rule" : "comment"
+               }
+            ],
+            "<" : "*"
+         },
+         {
+            "+rule" : "block_point",
+            "<" : "*"
+         }
+      ]
+   },
+   "data_section" : {
+      "+any" : [
+         {
+            "+rule" : "testml_data_section"
+         },
+         {
+            "+rule" : "yaml_data_section"
+         },
+         {
+            "+rule" : "json_data_section"
+         },
+         {
+            "+rule" : "xml_data_section"
+         }
+      ]
+   },
+   "document" : {
+      "+all" : [
+         {
+            "+rule" : "meta_section"
+         },
+         {
+            "+rule" : "test_section"
+         },
+         {
+            "+rule" : "data_section",
+            "<" : "?"
+         }
+      ]
+   },
+   "double_quoted_string" : {
+      "+re" : "(?:\"(([^\\n\\\\\"]|\\\\\"|\\\\\\\\|\\\\[0nt])*?)\")"
+   },
+   "json_data_section" : {
+      "+re" : "(\\[.+)"
+   },
+   "lines_point" : {
+      "+all" : [
+         {
+            "+rule" : "point_marker"
+         },
+         {
+            "+re" : "[\\ \\t]+"
+         },
+         {
+            "+rule" : "point_name"
+         },
+         {
+            "+re" : "[\\ \\t]*\\r?\\n"
+         },
+         {
+            "+rule" : "point_lines"
+         }
+      ]
+   },
+   "meta_section" : {
+      "+all" : [
+         {
+            "+re" : "(?:\\#.*\\r?\\n|[\\ \\t]*\\r?\\n)*"
+         },
+         {
+            "+any" : [
+               {
+                  "+rule" : "meta_testml_statement"
+               },
+               {
+                  "+error" : "No TestML meta directive found"
+               }
+            ]
+         },
+         {
+            "+any" : [
+               {
+                  "+rule" : "meta_statement"
+               },
+               {
+                  "+rule" : "comment"
+               },
+               {
+                  "+rule" : "blank_line"
+               }
+            ],
+            "<" : "*"
+         }
+      ]
+   },
+   "meta_statement" : {
+      "+re" : "%((?:(?:Title|Data|Plan|BlockMarker|PointMarker)|[a-z]\\w*)):[\\ \\t]+((?:(?:'(([^\\n\\\\']|\\\\'|\\\\\\\\)*?)')|(?:\"(([^\\n\\\\\"]|\\\\\"|\\\\\\\\|\\\\[0nt])*?)\")|([^\\ \\t\\n\\#](?:[^\\n\\#]*[^\\ \\t\\n\\#])?)))(?:[\\ \\t]+\\#.*\\r?\\n|\\r?\\n)"
+   },
+   "meta_testml_statement" : {
+      "+re" : "%TestML:[\\ \\t]+(([0-9]\\.[0-9]+))(?:[\\ \\t]+\\#.*\\r?\\n|\\r?\\n)"
+   },
+   "phrase_point" : {
+      "+all" : [
+         {
+            "+rule" : "point_marker"
+         },
+         {
+            "+re" : "[\\ \\t]+"
+         },
+         {
+            "+rule" : "point_name"
+         },
+         {
+            "+re" : ":[\\ \\t]"
+         },
+         {
+            "+rule" : "point_phrase"
+         },
+         {
+            "+re" : "\\r?\\n"
+         },
+         {
+            "+re" : "(?:\\#.*\\r?\\n|[\\ \\t]*\\r?\\n)*"
+         }
+      ]
+   },
+   "point_call" : {
+      "+re" : "(\\*[a-z]\\w*)"
+   },
+   "point_lines" : {
+      "+re" : "((?:(?!===|---).*\\r?\\n)*)"
+   },
+   "point_marker" : {
+      "+re" : "---"
+   },
+   "point_name" : {
+      "+re" : "([a-z]\\w*)"
+   },
+   "point_phrase" : {
+      "+re" : "(([^\\ \\t\\n\\#](?:[^\\n\\#]*[^\\ \\t\\n\\#])?))"
+   },
+   "quoted_string" : {
+      "+any" : [
+         {
+            "+rule" : "single_quoted_string"
+         },
+         {
+            "+rule" : "double_quoted_string"
+         }
+      ]
+   },
+   "single_quoted_string" : {
+      "+re" : "(?:'(([^\\n\\\\']|\\\\'|\\\\\\\\)*?)')"
+   },
+   "string_call" : {
+      "+rule" : "quoted_string"
+   },
+   "sub_expression" : {
+      "+any" : [
+         {
+            "+rule" : "point_call"
+         },
+         {
+            "+rule" : "string_call"
+         },
+         {
+            "+rule" : "transform_call"
+         }
+      ]
+   },
+   "test_expression" : {
+      "+all" : [
+         {
+            "+rule" : "sub_expression"
+         },
+         {
+            "+all" : [
+               {
+                  "+not" : "assertion_call_test"
+               },
+               {
+                  "+rule" : "call_indicator"
+               },
+               {
+                  "+rule" : "sub_expression"
+               }
+            ],
+            "<" : "*"
+         }
+      ]
+   },
+   "test_section" : {
+      "+any" : [
+         {
+            "+rule" : "ws"
+         },
+         {
+            "+rule" : "test_statement"
+         }
+      ],
+      "<" : "*"
+   },
+   "test_statement" : {
+      "+all" : [
+         {
+            "+rule" : "test_expression"
+         },
+         {
+            "+rule" : "assertion_call",
+            "<" : "?"
+         },
+         {
+            "+any" : [
+               {
+                  "+re" : ";"
+               },
+               {
+                  "+error" : "You seem to be missing a semicolon"
+               }
+            ]
+         }
+      ]
+   },
+   "testml_data_section" : {
+      "+rule" : "data_block",
+      "<" : "*"
+   },
+   "transform_argument" : {
+      "+rule" : "sub_expression"
+   },
+   "transform_argument_list" : {
+      "+all" : [
+         {
+            "+re" : "\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
+         },
+         {
+            "+rule" : "transform_arguments",
+            "<" : "?"
+         },
+         {
+            "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\)"
+         }
+      ]
+   },
+   "transform_arguments" : {
+      "+all" : [
+         {
+            "+rule" : "transform_argument"
+         },
+         {
+            "+all" : [
+               {
+                  "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
+               },
+               {
+                  "+rule" : "transform_argument"
+               }
+            ],
+            "<" : "*"
+         }
+      ]
+   },
+   "transform_call" : {
+      "+all" : [
+         {
+            "+rule" : "transform_name"
+         },
+         {
+            "+rule" : "transform_argument_list",
+            "<" : "?"
+         }
+      ]
+   },
+   "transform_name" : {
+      "+any" : [
+         {
+            "+rule" : "user_transform"
+         },
+         {
+            "+rule" : "core_transform"
+         }
+      ]
+   },
+   "unquoted_string" : {
+      "+re" : "([^\\ \\t\\n\\#](?:[^\\n\\#]*[^\\ \\t\\n\\#])?)"
+   },
+   "user_transform" : {
+      "+re" : "([a-z]\\w*)"
+   },
+   "ws" : {
+      "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)"
+   },
+   "xml_data_section" : {
+      "+re" : "(<.+)"
+   },
+   "yaml_data_section" : {
+      "+re" : "(---[\\ \\t]*\\r?\\n.+)"
+   }
+}

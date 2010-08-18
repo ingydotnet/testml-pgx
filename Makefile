@@ -1,15 +1,14 @@
+export PERL5LIB=../pegex-pm/lib
+
+COMPILE_COMMAND = perl -MPegex::Compiler::Bootstrap -e 'print Pegex::Compiler::Bootstrap->new->compile_file(shift)->combinate->to_
+
 all: testml.pgx.yaml testml.pgx.json
 
-# export PERL5LIB=$(HOME)/src/parse-pegex-pm/lib
-
-TO_YAML = perl -MPegex::Compiler -e 'print Pegex::Compiler->grammar_file_to_yaml(shift)'
-TO_JSON = perl -MYAML::XS -MJSON::XS -e 'print encode_json YAML::XS::LoadFile(shift)'
-
 testml.pgx.yaml: testml.pgx Makefile
-	$(TO_YAML) $< > $@
+	$(COMPILE_COMMAND)yaml' $< > $@
 
-testml.pgx.json: testml.pgx.yaml
-	 $(TO_JSON) $< > $@
+testml.pgx.json: testml.pgx Makefile
+	$(COMPILE_COMMAND)json' $< > $@
 
 clean:
 	rm -f testml.pgx.*
