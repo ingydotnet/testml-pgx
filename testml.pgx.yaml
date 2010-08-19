@@ -126,7 +126,7 @@ point_lines:
 point_marker:
   +re: '---'
 point_name:
-  +re: ([a-z]\w*)
+  +re: ([a-z]\w*|[A-Z]\w*)
 point_phrase:
   +re: (([^\ \t\n\#](?:[^\n\#]*[^\ \t\n\#])?))
 quoted_string:

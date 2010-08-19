@@ -173,6 +173,10 @@ phrase_point:
 
 point_marker: /<DASH><DASH><DASH>/
 
-point_name: /(<LOWER><WORD>*)/
+point_name: /(<user_point_name>|<core_point_name>)/
+
+user_point_name:  /<LOWER><WORD>*/
+
+core_point_name:  /<UPPER><WORD>*/
 
 point_phrase: /(<unquoted_string>)/
