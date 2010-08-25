@@ -68,13 +68,16 @@ test_expression:
   ]*
 
 sub_expression:
-  <point_call>  |
-  <string_call> |
+  <point_call>   |
+  <string_call>  |
+  <integer_call> |
   <transform_call>
 
 point_call: /(<STAR><LOWER><WORD>*)/
 
 string_call: <quoted_string>
+
+integer_call: /(<DIGIT>+)/
 
 transform_call:
   <transform_name>
