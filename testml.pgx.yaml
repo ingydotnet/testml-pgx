@@ -38,6 +38,12 @@ assertion_operator_has:
   +all:
   - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)+~~(?:[\ \t]|\r?\n|\#.*\r?\n)+
   - +rule: test_expression
+assignment_statement:
+  +all:
+  - +rule: variable_name
+  - +re: \s+=\s+
+  - +rule: test_expression
+  - +rule: semicolon
 blank_line:
   +re: '[\ \t]*\r?\n'
 block_header:
@@ -133,6 +139,10 @@ quoted_string:
   +any:
   - +rule: single_quoted_string
   - +rule: double_quoted_string
+semicolon:
+  +any:
+  - +re: ;
+  - +error: You seem to be missing a semicolon
 single_quoted_string:
   +re: (?:'(([^\n\\']|\\'|\\\\)*?)')
 string_call:
@@ -153,6 +163,7 @@ test_expression:
 test_section:
   +any:
   - +rule: ws
+  - +rule: assignment_statement
   - +rule: test_statement
   <: '*'
 test_statement:
@@ -160,9 +171,7 @@ test_statement:
   - +rule: test_expression
   - +rule: assertion_call
     <: '?'
-  - +any:
-    - +re: ;
-    - +error: You seem to be missing a semicolon
+  - +rule: semicolon
 testml_data_section:
   +rule: data_block
   <: '*'
@@ -194,6 +203,8 @@ unquoted_string:
   +re: ([^\ \t\n\#](?:[^\n\#]*[^\ \t\n\#])?)
 user_transform:
   +re: ([a-z]\w*)
+variable_name:
+  +re: ([a-zA-Z]\w*)
 ws:
   +re: (?:[\ \t]|\r?\n|\#.*\r?\n)
 xml_data_section:

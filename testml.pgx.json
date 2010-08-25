@@ -88,6 +88,22 @@
          }
       ]
    },
+   "assignment_statement" : {
+      "+all" : [
+         {
+            "+rule" : "variable_name"
+         },
+         {
+            "+re" : "\\s+=\\s+"
+         },
+         {
+            "+rule" : "test_expression"
+         },
+         {
+            "+rule" : "semicolon"
+         }
+      ]
+   },
    "blank_line" : {
       "+re" : "[\\ \\t]*\\r?\\n"
    },
@@ -301,6 +317,16 @@
          }
       ]
    },
+   "semicolon" : {
+      "+any" : [
+         {
+            "+re" : ";"
+         },
+         {
+            "+error" : "You seem to be missing a semicolon"
+         }
+      ]
+   },
    "single_quoted_string" : {
       "+re" : "(?:'(([^\\n\\\\']|\\\\'|\\\\\\\\)*?)')"
    },
@@ -347,6 +373,9 @@
             "+rule" : "ws"
          },
          {
+            "+rule" : "assignment_statement"
+         },
+         {
             "+rule" : "test_statement"
          }
       ],
@@ -362,14 +391,7 @@
             "<" : "?"
          },
          {
-            "+any" : [
-               {
-                  "+re" : ";"
-               },
-               {
-                  "+error" : "You seem to be missing a semicolon"
-               }
-            ]
+            "+rule" : "semicolon"
          }
       ]
    },
@@ -438,6 +460,9 @@
    },
    "user_transform" : {
       "+re" : "([a-z]\\w*)"
+   },
+   "variable_name" : {
+      "+re" : "([a-zA-Z]\\w*)"
    },
    "ws" : {
       "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)"
