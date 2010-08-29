@@ -29,11 +29,11 @@ meta_section:
   [ <meta_testml_statement> | `No TestML meta directive found` ]
   [ <meta_statement> | <comment> | <blank_line> ]*
 
-meta_testml_statement: /<PERCENT>TestML:<BLANK>+(<testml_version>)(?:<BLANK>+<comment>|<EOL>)/
+meta_testml_statement: /<PERCENT>TestML:?<BLANK>+(<testml_version>)(?:<BLANK>+<comment>|<EOL>)/
 
 testml_version: /(<DIGIT><DOT><DIGIT>+)/
 
-meta_statement: /<PERCENT>(<meta_keyword>):<BLANK>+(<meta_value>)(?:<BLANK>+<comment>|<EOL>)/
+meta_statement: /<PERCENT>(<meta_keyword>):?<BLANK>+(<meta_value>)(?:<BLANK>+<comment>|<EOL>)/
 
 meta_keyword: /(?:<core_meta_keyword>|<user_meta_keyword>)/
 core_meta_keyword: /(?:Data|BlockMarker|PointMarker)/
