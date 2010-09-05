@@ -1,9 +1,4 @@
-# TestML Document
-document: 
-  <meta_section>
-  <test_section>
-  <data_section>?
-
+TOP: <NEVER> <code_section> <data_section>
 
 # General Tokens
 escape: /[0nt]/
@@ -23,65 +18,50 @@ unquoted_string: /([^<BLANKS><BREAK><HASH>](?:[^<BREAK><HASH>]*[^<BLANKS><BREAK>
 number: /(<DIGIT>+)/
 
 
-# TestML Meta Section
-meta_section:
-  /(?:<comment>|<blank_line>)*/
-  [ <meta_testml_statement> | `No TestML meta directive found` ]
-  [ <meta_statement> | <comment> | <blank_line> ]*
-
-meta_testml_statement: /<PERCENT>TestML:?<BLANK>+(<testml_version>)(?:<BLANK>+<comment>|<EOL>)/
-
-testml_version: /(<DIGIT><DOT><DIGIT>+)/
-
-meta_statement: /<PERCENT>(<meta_keyword>):?<BLANK>+(<meta_value>)(?:<BLANK>+<comment>|<EOL>)/
-
-meta_keyword: /(?:<core_meta_keyword>|<user_meta_keyword>)/
-core_meta_keyword: /(?:Data|BlockMarker|PointMarker)/
-user_meta_keyword: /<LOWER><WORD>*/
-
-meta_value: /(?:<single_quoted_string>|<double_quoted_string>|<unquoted_string>)/
-
-
-# TestML Meta Section
-test_section: [ <ws> | <assignment_statement> | <test_statement> ]*
+# TestML Code Section
+code_section: [ <ws> | <assignment_statement> | <code_statement> ]*
 
 assignment_statement:
   <variable_name>
   /<WS>+<EQUAL><WS>+/
-  <test_expression> 
+  <code_expression> 
   <semicolon>
 
 variable_name: /(<ALPHA><WORD>*)/
 
-test_statement:
-  <test_expression>
+code_statement:
+  <code_expression>
   <assertion_call>?
   <semicolon>
 
 semicolon:
   [ /<SEMI>/ | `You seem to be missing a semicolon` ]
 
-test_expression:
-  <sub_expression>
-  [
-    <!assertion_call_test>
-    <call_indicator>
-    <sub_expression>
-  ]*
+code_expression:
+  <code_object>
+  <unit_call>*
 
-sub_expression:
-  <point_call>   |
-  <string_call>  |
-  <number_call> |
-  <transform_call>
+unit_call:
+  <!assertion_call_test>
+  <call_indicator>
+  <code_object>
 
-point_call: /(<STAR><LOWER><WORD>*)/
+code_object:
+  <function_object> |
+  <point_object> |
+  <string_object> |
+  <number_object> |
+  <transform_object>
 
-string_call: <quoted_string>
+function_object: /<LCURLY><ws>*/ <code_statement>* /<ws>*<RCURLY>/
 
-number_call: <number>
+point_object: /(<STAR><LOWER><WORD>*)/
 
-transform_call:
+string_object: <quoted_string>
+
+number_object: <number>
+
+transform_object:
   <transform_name>
   <transform_argument_list>?
 
@@ -102,7 +82,7 @@ transform_arguments:
   <transform_argument>
   [ /<ws>*<COMMA><ws>*/ <transform_argument> ]*
 
-transform_argument: <sub_expression>
+transform_argument: <code_expression>
 
 assertion_call_test: /<call_indicator>(?:EQ|OK|HAS)/
 
@@ -112,11 +92,11 @@ assertion_eq: <assertion_operator_eq> | <assertion_function_eq>
 
 assertion_operator_eq:
   /<ws>+<EQUAL><EQUAL><ws>+/
-  <test_expression>
+  <code_expression>
 
 assertion_function_eq:
   /<call_indicator>EQ<LPAREN>/
-  <test_expression>
+  <code_expression>
   /<RPAREN>/
 
 assertion_ok: <assertion_function_ok>
@@ -127,31 +107,17 @@ assertion_has: <assertion_operator_has> | <assertion_function_has>
 
 assertion_operator_has:
   /<ws>+<TILDE><TILDE><ws>+/
-  <test_expression>
+  <code_expression>
 
 assertion_function_has:
   /<call_indicator>HAS<LPAREN>/
-  <test_expression>
+  <code_expression>
   /<RPAREN>/
 
 empty_parens: /(?:<LPAREN><ws>*<RPAREN>)/
 
 # TestML Data Section
-data_section:
-  <testml_data_section> |
-  <yaml_data_section>   |
-  <json_data_section>   |
-  <xml_data_section>
-
-testml_data_section: <data_block>*
-
-yaml_data_section: /(<DASH><DASH><DASH><BLANK>*<EOL><rest>)/
-
-json_data_section: /(<LSQUARE><rest>)/
-
-xml_data_section: /(<LANGLE><rest>)/
-
-rest: /<ANY>+/
+data_section: <data_block>*
 
 data_block:
   <block_header>

@@ -1,5 +1,21 @@
 {
-   "_FIRST_RULE" : "document",
+   "NEVER" : {
+      "+re" : "(?!)"
+   },
+   "TOP" : {
+      "+all" : [
+         {
+            "+rule" : "NEVER"
+         },
+         {
+            "+rule" : "code_section"
+         },
+         {
+            "+rule" : "data_section"
+         }
+      ]
+   },
+   "_FIRST_RULE" : "TOP",
    "assertion_call" : {
       "+any" : [
          {
@@ -32,7 +48,7 @@
             "+re" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)EQ\\("
          },
          {
-            "+rule" : "test_expression"
+            "+rule" : "code_expression"
          },
          {
             "+re" : "\\)"
@@ -45,7 +61,7 @@
             "+re" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)HAS\\("
          },
          {
-            "+rule" : "test_expression"
+            "+rule" : "code_expression"
          },
          {
             "+re" : "\\)"
@@ -74,7 +90,7 @@
             "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+==(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
          },
          {
-            "+rule" : "test_expression"
+            "+rule" : "code_expression"
          }
       ]
    },
@@ -84,7 +100,7 @@
             "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+~~(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
          },
          {
-            "+rule" : "test_expression"
+            "+rule" : "code_expression"
          }
       ]
    },
@@ -97,7 +113,7 @@
             "+re" : "\\s+=\\s+"
          },
          {
-            "+rule" : "test_expression"
+            "+rule" : "code_expression"
          },
          {
             "+rule" : "semicolon"
@@ -147,6 +163,64 @@
    "call_indicator" : {
       "+re" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)"
    },
+   "code_expression" : {
+      "+all" : [
+         {
+            "+rule" : "code_object"
+         },
+         {
+            "+rule" : "unit_call",
+            "<" : "*"
+         }
+      ]
+   },
+   "code_object" : {
+      "+any" : [
+         {
+            "+rule" : "function_object"
+         },
+         {
+            "+rule" : "point_object"
+         },
+         {
+            "+rule" : "string_object"
+         },
+         {
+            "+rule" : "number_object"
+         },
+         {
+            "+rule" : "transform_object"
+         }
+      ]
+   },
+   "code_section" : {
+      "+any" : [
+         {
+            "+rule" : "ws"
+         },
+         {
+            "+rule" : "assignment_statement"
+         },
+         {
+            "+rule" : "code_statement"
+         }
+      ],
+      "<" : "*"
+   },
+   "code_statement" : {
+      "+all" : [
+         {
+            "+rule" : "code_expression"
+         },
+         {
+            "+rule" : "assertion_call",
+            "<" : "?"
+         },
+         {
+            "+rule" : "semicolon"
+         }
+      ]
+   },
    "comment" : {
       "+re" : "\\#.*\\r?\\n"
    },
@@ -176,40 +250,25 @@
       ]
    },
    "data_section" : {
-      "+any" : [
-         {
-            "+rule" : "testml_data_section"
-         },
-         {
-            "+rule" : "yaml_data_section"
-         },
-         {
-            "+rule" : "json_data_section"
-         },
-         {
-            "+rule" : "xml_data_section"
-         }
-      ]
-   },
-   "document" : {
-      "+all" : [
-         {
-            "+rule" : "meta_section"
-         },
-         {
-            "+rule" : "test_section"
-         },
-         {
-            "+rule" : "data_section",
-            "<" : "?"
-         }
-      ]
+      "+rule" : "data_block",
+      "<" : "*"
    },
    "double_quoted_string" : {
       "+re" : "(?:\"(([^\\n\\\\\"]|\\\\\"|\\\\\\\\|\\\\[0nt])*?)\")"
    },
-   "json_data_section" : {
-      "+re" : "(\\[.+)"
+   "function_object" : {
+      "+all" : [
+         {
+            "+re" : "\\{(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
+         },
+         {
+            "+rule" : "code_statement",
+            "<" : "*"
+         },
+         {
+            "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\}"
+         }
+      ]
    },
    "lines_point" : {
       "+all" : [
@@ -230,47 +289,10 @@
          }
       ]
    },
-   "meta_section" : {
-      "+all" : [
-         {
-            "+re" : "(?:\\#.*\\r?\\n|[\\ \\t]*\\r?\\n)*"
-         },
-         {
-            "+any" : [
-               {
-                  "+rule" : "meta_testml_statement"
-               },
-               {
-                  "+error" : "No TestML meta directive found"
-               }
-            ]
-         },
-         {
-            "+any" : [
-               {
-                  "+rule" : "meta_statement"
-               },
-               {
-                  "+rule" : "comment"
-               },
-               {
-                  "+rule" : "blank_line"
-               }
-            ],
-            "<" : "*"
-         }
-      ]
-   },
-   "meta_statement" : {
-      "+re" : "%((?:(?:Data|BlockMarker|PointMarker)|[a-z]\\w*)):?[\\ \\t]+((?:(?:'(([^\\n\\\\']|\\\\'|\\\\\\\\)*?)')|(?:\"(([^\\n\\\\\"]|\\\\\"|\\\\\\\\|\\\\[0nt])*?)\")|([^\\ \\t\\n\\#](?:[^\\n\\#]*[^\\ \\t\\n\\#])?)))(?:[\\ \\t]+\\#.*\\r?\\n|\\r?\\n)"
-   },
-   "meta_testml_statement" : {
-      "+re" : "%TestML:?[\\ \\t]+(([0-9]\\.[0-9]+))(?:[\\ \\t]+\\#.*\\r?\\n|\\r?\\n)"
-   },
    "number" : {
       "+re" : "([0-9]+)"
    },
-   "number_call" : {
+   "number_object" : {
       "+rule" : "number"
    },
    "phrase_point" : {
@@ -298,9 +320,6 @@
          }
       ]
    },
-   "point_call" : {
-      "+re" : "(\\*[a-z]\\w*)"
-   },
    "point_lines" : {
       "+re" : "((?:(?!===|---).*\\r?\\n)*)"
    },
@@ -309,6 +328,9 @@
    },
    "point_name" : {
       "+re" : "([a-z]\\w*|[A-Z]\\w*)"
+   },
+   "point_object" : {
+      "+re" : "(\\*[a-z]\\w*)"
    },
    "point_phrase" : {
       "+re" : "(([^\\ \\t\\n\\#](?:[^\\n\\#]*[^\\ \\t\\n\\#])?))"
@@ -336,80 +358,11 @@
    "single_quoted_string" : {
       "+re" : "(?:'(([^\\n\\\\']|\\\\'|\\\\\\\\)*?)')"
    },
-   "string_call" : {
+   "string_object" : {
       "+rule" : "quoted_string"
    },
-   "sub_expression" : {
-      "+any" : [
-         {
-            "+rule" : "point_call"
-         },
-         {
-            "+rule" : "string_call"
-         },
-         {
-            "+rule" : "number_call"
-         },
-         {
-            "+rule" : "transform_call"
-         }
-      ]
-   },
-   "test_expression" : {
-      "+all" : [
-         {
-            "+rule" : "sub_expression"
-         },
-         {
-            "+all" : [
-               {
-                  "+not" : "assertion_call_test"
-               },
-               {
-                  "+rule" : "call_indicator"
-               },
-               {
-                  "+rule" : "sub_expression"
-               }
-            ],
-            "<" : "*"
-         }
-      ]
-   },
-   "test_section" : {
-      "+any" : [
-         {
-            "+rule" : "ws"
-         },
-         {
-            "+rule" : "assignment_statement"
-         },
-         {
-            "+rule" : "test_statement"
-         }
-      ],
-      "<" : "*"
-   },
-   "test_statement" : {
-      "+all" : [
-         {
-            "+rule" : "test_expression"
-         },
-         {
-            "+rule" : "assertion_call",
-            "<" : "?"
-         },
-         {
-            "+rule" : "semicolon"
-         }
-      ]
-   },
-   "testml_data_section" : {
-      "+rule" : "data_block",
-      "<" : "*"
-   },
    "transform_argument" : {
-      "+rule" : "sub_expression"
+      "+rule" : "code_expression"
    },
    "transform_argument_list" : {
       "+all" : [
@@ -443,7 +396,17 @@
          }
       ]
    },
-   "transform_call" : {
+   "transform_name" : {
+      "+any" : [
+         {
+            "+rule" : "user_transform"
+         },
+         {
+            "+rule" : "core_transform"
+         }
+      ]
+   },
+   "transform_object" : {
       "+all" : [
          {
             "+rule" : "transform_name"
@@ -454,13 +417,16 @@
          }
       ]
    },
-   "transform_name" : {
-      "+any" : [
+   "unit_call" : {
+      "+all" : [
          {
-            "+rule" : "user_transform"
+            "+not" : "assertion_call_test"
          },
          {
-            "+rule" : "core_transform"
+            "+rule" : "call_indicator"
+         },
+         {
+            "+rule" : "code_object"
          }
       ]
    },
@@ -475,11 +441,5 @@
    },
    "ws" : {
       "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)"
-   },
-   "xml_data_section" : {
-      "+re" : "(<.+)"
-   },
-   "yaml_data_section" : {
-      "+re" : "(---[\\ \\t]*\\r?\\n.+)"
    }
 }
