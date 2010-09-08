@@ -19,7 +19,7 @@ number: /(<DIGIT>+)/
 
 
 # TestML Code Section
-code_section: [ <ws> | <assignment_statement> | <code_statement> ]*
+code_section: [ /<ws>+/ | <assignment_statement> | <code_statement> ]*
 
 assignment_statement:
   <variable_name>
@@ -53,7 +53,22 @@ code_object:
   <number_object> |
   <transform_object>
 
-function_object: /<LCURLY><ws>*/ <code_statement>* /<ws>*<RCURLY>/
+function_object:
+  <function_signature>?
+  /<ws>*<LCURLY><ws>*/
+  [ /<ws>+/ | <assignment_statement> | <code_statement>]*
+  /<ws>*<RCURLY>/
+
+function_signature:
+  /<LPAREN><ws>*/
+  <function_variables>?
+  /<ws>*<RPAREN>/
+
+function_variables: 
+  <function_variable>
+  [ /<ws>*<COMMA><ws>*/ <function_variable> ]*
+
+function_variable: /(<ALPHA><WORD>*)/
 
 point_object: /(<STAR><LOWER><WORD>*)/
 

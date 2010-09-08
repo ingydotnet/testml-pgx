@@ -85,7 +85,7 @@ code_object:
   - +rule: transform_object
 code_section:
   +any:
-  - +rule: ws
+  - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)+
   - +rule: assignment_statement
   - +rule: code_statement
   <: '*'
@@ -115,10 +115,30 @@ double_quoted_string:
   +re: (?:"(([^\n\\"]|\\"|\\\\|\\[0nt])*?)")
 function_object:
   +all:
-  - +re: \{(?:[\ \t]|\r?\n|\#.*\r?\n)*
-  - +rule: code_statement
+  - +rule: function_signature
+    <: '?'
+  - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)*\{(?:[\ \t]|\r?\n|\#.*\r?\n)*
+  - +any:
+    - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)+
+    - +rule: assignment_statement
+    - +rule: code_statement
     <: '*'
   - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)*\}
+function_signature:
+  +all:
+  - +re: \((?:[\ \t]|\r?\n|\#.*\r?\n)*
+  - +rule: function_variables
+    <: '?'
+  - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
+function_variable:
+  +re: ([a-zA-Z]\w*)
+function_variables:
+  +all:
+  - +rule: function_variable
+  - +all:
+    - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
+    - +rule: function_variable
+    <: '*'
 lines_point:
   +all:
   - +rule: point_marker
@@ -196,5 +216,3 @@ user_transform:
   +re: ([a-z]\w*)
 variable_name:
   +re: ([a-zA-Z]\w*)
-ws:
-  +re: (?:[\ \t]|\r?\n|\#.*\r?\n)
