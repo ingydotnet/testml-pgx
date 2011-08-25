@@ -207,7 +207,8 @@ transform_object:
     <: '?'
 unit_call:
   +all:
-  - +not: assertion_call_test
+  - +rule: assertion_call_test
+    <: '!'
   - +rule: call_indicator
   - +rule: code_object
 unquoted_string:
