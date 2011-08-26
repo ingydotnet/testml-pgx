@@ -1,219 +1,219 @@
 ---
++top: TOP
 NEVER:
-  +re: (?!)
+  .rgx: (?!)
 TOP:
-  +all:
-  - +rule: NEVER
-  - +rule: code_section
-  - +rule: data_section
-_FIRST_RULE: TOP
+  .all:
+  - .rul: NEVER
+  - .rul: code_section
+  - .rul: data_section
 assertion_call:
-  +any:
-  - +rule: assertion_eq
-  - +rule: assertion_ok
-  - +rule: assertion_has
+  .any:
+  - .rul: assertion_eq
+  - .rul: assertion_ok
+  - .rul: assertion_has
 assertion_call_test:
-  +re: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)(?:EQ|OK|HAS)
+  .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)(?:EQ|OK|HAS)
 assertion_eq:
-  +any:
-  - +rule: assertion_operator_eq
-  - +rule: assertion_function_eq
+  .any:
+  - .rul: assertion_operator_eq
+  - .rul: assertion_function_eq
 assertion_function_eq:
-  +all:
-  - +re: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)EQ\(
-  - +rule: code_expression
-  - +re: \)
+  .all:
+  - .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)EQ\(
+  - .rul: code_expression
+  - .rgx: \)
 assertion_function_has:
-  +all:
-  - +re: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)HAS\(
-  - +rule: code_expression
-  - +re: \)
+  .all:
+  - .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)HAS\(
+  - .rul: code_expression
+  - .rgx: \)
 assertion_function_ok:
-  +re: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)OK(?:\((?:[\
+  .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)OK(?:\((?:[\
     \t]|\r?\n|\#.*\r?\n)*\))?
 assertion_has:
-  +any:
-  - +rule: assertion_operator_has
-  - +rule: assertion_function_has
+  .any:
+  - .rul: assertion_operator_has
+  - .rul: assertion_function_has
 assertion_ok:
-  +rule: assertion_function_ok
+  .rul: assertion_function_ok
 assertion_operator_eq:
-  +all:
-  - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)+==(?:[\ \t]|\r?\n|\#.*\r?\n)+
-  - +rule: code_expression
+  .all:
+  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+==(?:[\ \t]|\r?\n|\#.*\r?\n)+
+  - .rul: code_expression
 assertion_operator_has:
-  +all:
-  - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)+~~(?:[\ \t]|\r?\n|\#.*\r?\n)+
-  - +rule: code_expression
+  .all:
+  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+~~(?:[\ \t]|\r?\n|\#.*\r?\n)+
+  - .rul: code_expression
 assignment_statement:
-  +all:
-  - +rule: variable_name
-  - +re: \s+=\s+
-  - +rule: code_expression
-  - +rule: semicolon
+  .all:
+  - .rul: variable_name
+  - .rgx: \s+=\s+
+  - .rul: code_expression
+  - .rul: semicolon
 blank_line:
-  +re: '[\ \t]*\r?\n'
+  .rgx: '[\ \t]*\r?\n'
 block_header:
-  +all:
-  - +rule: block_marker
-  - +all:
-    - +re: '[\ \t]+'
-    - +rule: block_label
-    <: '?'
-  - +re: '[\ \t]*\r?\n'
+  .all:
+  - .rul: block_marker
+  - +mod: '?'
+    .all:
+    - .rgx: '[\ \t]+'
+    - .rul: block_label
+  - .rgx: '[\ \t]*\r?\n'
 block_label:
-  +rule: unquoted_string
+  .rul: unquoted_string
 block_marker:
-  +re: ===
+  .rgx: ===
 block_point:
-  +any:
-  - +rule: lines_point
-  - +rule: phrase_point
+  .any:
+  - .rul: lines_point
+  - .rul: phrase_point
 call_indicator:
-  +re: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)
+  .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)
 code_expression:
-  +all:
-  - +rule: code_object
-  - +rule: unit_call
-    <: '*'
+  .all:
+  - .rul: code_object
+  - +mod: '*'
+    .rul: unit_call
 code_object:
-  +any:
-  - +rule: function_object
-  - +rule: point_object
-  - +rule: string_object
-  - +rule: number_object
-  - +rule: transform_object
+  .any:
+  - .rul: function_object
+  - .rul: point_object
+  - .rul: string_object
+  - .rul: number_object
+  - .rul: transform_object
 code_section:
-  +any:
-  - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)+
-  - +rule: assignment_statement
-  - +rule: code_statement
-  <: '*'
+  +mod: '*'
+  .any:
+  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+
+  - .rul: assignment_statement
+  - .rul: code_statement
 code_statement:
-  +all:
-  - +rule: code_expression
-  - +rule: assertion_call
-    <: '?'
-  - +rule: semicolon
+  .all:
+  - .rul: code_expression
+  - +mod: '?'
+    .rul: assertion_call
+  - .rul: semicolon
 comment:
-  +re: \#.*\r?\n
+  .rgx: \#.*\r?\n
 core_transform:
-  +re: ([A-Z]\w*)
+  .rgx: ([A-Z]\w*)
 data_block:
-  +all:
-  - +rule: block_header
-  - +any:
-    - +rule: blank_line
-    - +rule: comment
-    <: '*'
-  - +rule: block_point
-    <: '*'
+  .all:
+  - .rul: block_header
+  - +mod: '*'
+    .any:
+    - .rul: blank_line
+    - .rul: comment
+  - +mod: '*'
+    .rul: block_point
 data_section:
-  +rule: data_block
-  <: '*'
+  +mod: '*'
+  .rul: data_block
 double_quoted_string:
-  +re: (?:"(([^\n\\"]|\\"|\\\\|\\[0nt])*?)")
+  .rgx: (?:"(([^\n\\"]|\\"|\\\\|\\[0nt])*?)")
 function_object:
-  +all:
-  - +rule: function_signature
-    <: '?'
-  - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)*\{(?:[\ \t]|\r?\n|\#.*\r?\n)*
-  - +any:
-    - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)+
-    - +rule: assignment_statement
-    - +rule: code_statement
-    <: '*'
-  - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)*\}
+  .all:
+  - +mod: '?'
+    .rul: function_signature
+  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\{(?:[\ \t]|\r?\n|\#.*\r?\n)*
+  - +mod: '*'
+    .any:
+    - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+
+    - .rul: assignment_statement
+    - .rul: code_statement
+  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\}
 function_signature:
-  +all:
-  - +re: \((?:[\ \t]|\r?\n|\#.*\r?\n)*
-  - +rule: function_variables
-    <: '?'
-  - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
+  .all:
+  - .rgx: \((?:[\ \t]|\r?\n|\#.*\r?\n)*
+  - +mod: '?'
+    .rul: function_variables
+  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
 function_variable:
-  +re: ([a-zA-Z]\w*)
+  .rgx: ([a-zA-Z]\w*)
 function_variables:
-  +all:
-  - +rule: function_variable
-  - +all:
-    - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
-    - +rule: function_variable
-    <: '*'
+  .all:
+  - .rul: function_variable
+  - +mod: '*'
+    .all:
+    - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
+    - .rul: function_variable
 lines_point:
-  +all:
-  - +rule: point_marker
-  - +re: '[\ \t]+'
-  - +rule: point_name
-  - +re: '[\ \t]*\r?\n'
-  - +rule: point_lines
+  .all:
+  - .rul: point_marker
+  - .rgx: '[\ \t]+'
+  - .rul: point_name
+  - .rgx: '[\ \t]*\r?\n'
+  - .rul: point_lines
 number:
-  +re: ([0-9]+)
+  .rgx: ([0-9]+)
 number_object:
-  +rule: number
+  .rul: number
 phrase_point:
-  +all:
-  - +rule: point_marker
-  - +re: '[\ \t]+'
-  - +rule: point_name
-  - +re: :[\ \t]
-  - +rule: point_phrase
-  - +re: \r?\n
-  - +re: (?:\#.*\r?\n|[\ \t]*\r?\n)*
+  .all:
+  - .rul: point_marker
+  - .rgx: '[\ \t]+'
+  - .rul: point_name
+  - .rgx: :[\ \t]
+  - .rul: point_phrase
+  - .rgx: \r?\n
+  - .rgx: (?:\#.*\r?\n|[\ \t]*\r?\n)*
 point_lines:
-  +re: ((?:(?!===|---).*\r?\n)*)
+  .rgx: ((?:(?!===|---).*\r?\n)*)
 point_marker:
-  +re: '---'
+  .rgx: '---'
 point_name:
-  +re: ([a-z]\w*|[A-Z]\w*)
+  .rgx: ([a-z]\w*|[A-Z]\w*)
 point_object:
-  +re: (\*[a-z]\w*)
+  .rgx: (\*[a-z]\w*)
 point_phrase:
-  +re: (([^\ \t\n\#](?:[^\n\#]*[^\ \t\n\#])?))
+  .rgx: (([^\ \t\n\#](?:[^\n\#]*[^\ \t\n\#])?))
 quoted_string:
-  +any:
-  - +rule: single_quoted_string
-  - +rule: double_quoted_string
+  .any:
+  - .rul: single_quoted_string
+  - .rul: double_quoted_string
 semicolon:
-  +any:
-  - +re: ;
-  - +error: You seem to be missing a semicolon
+  .any:
+  - .rgx: ;
+  - .err: You seem to be missing a semicolon
 single_quoted_string:
-  +re: (?:'(([^\n\\']|\\'|\\\\)*?)')
+  .rgx: (?:'(([^\n\\']|\\'|\\\\)*?)')
 string_object:
-  +rule: quoted_string
+  .rul: quoted_string
 transform_argument:
-  +rule: code_expression
+  .rul: code_expression
 transform_argument_list:
-  +all:
-  - +re: \((?:[\ \t]|\r?\n|\#.*\r?\n)*
-  - +rule: transform_arguments
-    <: '?'
-  - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
+  .all:
+  - .rgx: \((?:[\ \t]|\r?\n|\#.*\r?\n)*
+  - +mod: '?'
+    .rul: transform_arguments
+  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
 transform_arguments:
-  +all:
-  - +rule: transform_argument
-  - +all:
-    - +re: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
-    - +rule: transform_argument
-    <: '*'
+  .all:
+  - .rul: transform_argument
+  - +mod: '*'
+    .all:
+    - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
+    - .rul: transform_argument
 transform_name:
-  +any:
-  - +rule: user_transform
-  - +rule: core_transform
+  .any:
+  - .rul: user_transform
+  - .rul: core_transform
 transform_object:
-  +all:
-  - +rule: transform_name
-  - +rule: transform_argument_list
-    <: '?'
+  .all:
+  - .rul: transform_name
+  - +mod: '?'
+    .rul: transform_argument_list
 unit_call:
-  +all:
-  - +rule: assertion_call_test
-    <: '!'
-  - +rule: call_indicator
-  - +rule: code_object
+  .all:
+  - +mod: '!'
+    .rul: assertion_call_test
+  - .rul: call_indicator
+  - .rul: code_object
 unquoted_string:
-  +re: ([^\ \t\n\#](?:[^\n\#]*[^\ \t\n\#])?)
+  .rgx: ([^\ \t\n\#](?:[^\n\#]*[^\ \t\n\#])?)
 user_transform:
-  +re: ([a-z]\w*)
+  .rgx: ([a-z]\w*)
 variable_name:
-  +re: ([a-zA-Z]\w*)
+  .rgx: ([a-zA-Z]\w*)

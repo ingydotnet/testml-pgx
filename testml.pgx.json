@@ -1,492 +1,492 @@
 {
+   "+top" : "TOP",
    "NEVER" : {
-      "+re" : "(?!)"
+      ".rgx" : "(?!)"
    },
    "TOP" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "NEVER"
+            ".rul" : "NEVER"
          },
          {
-            "+rule" : "code_section"
+            ".rul" : "code_section"
          },
          {
-            "+rule" : "data_section"
+            ".rul" : "data_section"
          }
       ]
    },
-   "_FIRST_RULE" : "TOP",
    "assertion_call" : {
-      "+any" : [
+      ".any" : [
          {
-            "+rule" : "assertion_eq"
+            ".rul" : "assertion_eq"
          },
          {
-            "+rule" : "assertion_ok"
+            ".rul" : "assertion_ok"
          },
          {
-            "+rule" : "assertion_has"
+            ".rul" : "assertion_has"
          }
       ]
    },
    "assertion_call_test" : {
-      "+re" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)(?:EQ|OK|HAS)"
+      ".rgx" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)(?:EQ|OK|HAS)"
    },
    "assertion_eq" : {
-      "+any" : [
+      ".any" : [
          {
-            "+rule" : "assertion_operator_eq"
+            ".rul" : "assertion_operator_eq"
          },
          {
-            "+rule" : "assertion_function_eq"
+            ".rul" : "assertion_function_eq"
          }
       ]
    },
    "assertion_function_eq" : {
-      "+all" : [
+      ".all" : [
          {
-            "+re" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)EQ\\("
+            ".rgx" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)EQ\\("
          },
          {
-            "+rule" : "code_expression"
+            ".rul" : "code_expression"
          },
          {
-            "+re" : "\\)"
+            ".rgx" : "\\)"
          }
       ]
    },
    "assertion_function_has" : {
-      "+all" : [
+      ".all" : [
          {
-            "+re" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)HAS\\("
+            ".rgx" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)HAS\\("
          },
          {
-            "+rule" : "code_expression"
+            ".rul" : "code_expression"
          },
          {
-            "+re" : "\\)"
+            ".rgx" : "\\)"
          }
       ]
    },
    "assertion_function_ok" : {
-      "+re" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)OK(?:\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\))?"
+      ".rgx" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)OK(?:\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\))?"
    },
    "assertion_has" : {
-      "+any" : [
+      ".any" : [
          {
-            "+rule" : "assertion_operator_has"
+            ".rul" : "assertion_operator_has"
          },
          {
-            "+rule" : "assertion_function_has"
+            ".rul" : "assertion_function_has"
          }
       ]
    },
    "assertion_ok" : {
-      "+rule" : "assertion_function_ok"
+      ".rul" : "assertion_function_ok"
    },
    "assertion_operator_eq" : {
-      "+all" : [
+      ".all" : [
          {
-            "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+==(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
+            ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+==(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
          },
          {
-            "+rule" : "code_expression"
+            ".rul" : "code_expression"
          }
       ]
    },
    "assertion_operator_has" : {
-      "+all" : [
+      ".all" : [
          {
-            "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+~~(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
+            ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+~~(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
          },
          {
-            "+rule" : "code_expression"
+            ".rul" : "code_expression"
          }
       ]
    },
    "assignment_statement" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "variable_name"
+            ".rul" : "variable_name"
          },
          {
-            "+re" : "\\s+=\\s+"
+            ".rgx" : "\\s+=\\s+"
          },
          {
-            "+rule" : "code_expression"
+            ".rul" : "code_expression"
          },
          {
-            "+rule" : "semicolon"
+            ".rul" : "semicolon"
          }
       ]
    },
    "blank_line" : {
-      "+re" : "[\\ \\t]*\\r?\\n"
+      ".rgx" : "[\\ \\t]*\\r?\\n"
    },
    "block_header" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "block_marker"
+            ".rul" : "block_marker"
          },
          {
-            "+all" : [
+            "+mod" : "?",
+            ".all" : [
                {
-                  "+re" : "[\\ \\t]+"
+                  ".rgx" : "[\\ \\t]+"
                },
                {
-                  "+rule" : "block_label"
+                  ".rul" : "block_label"
                }
-            ],
-            "<" : "?"
+            ]
          },
          {
-            "+re" : "[\\ \\t]*\\r?\\n"
+            ".rgx" : "[\\ \\t]*\\r?\\n"
          }
       ]
    },
    "block_label" : {
-      "+rule" : "unquoted_string"
+      ".rul" : "unquoted_string"
    },
    "block_marker" : {
-      "+re" : "==="
+      ".rgx" : "==="
    },
    "block_point" : {
-      "+any" : [
+      ".any" : [
          {
-            "+rule" : "lines_point"
+            ".rul" : "lines_point"
          },
          {
-            "+rule" : "phrase_point"
+            ".rul" : "phrase_point"
          }
       ]
    },
    "call_indicator" : {
-      "+re" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)"
+      ".rgx" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)"
    },
    "code_expression" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "code_object"
+            ".rul" : "code_object"
          },
          {
-            "+rule" : "unit_call",
-            "<" : "*"
+            "+mod" : "*",
+            ".rul" : "unit_call"
          }
       ]
    },
    "code_object" : {
-      "+any" : [
+      ".any" : [
          {
-            "+rule" : "function_object"
+            ".rul" : "function_object"
          },
          {
-            "+rule" : "point_object"
+            ".rul" : "point_object"
          },
          {
-            "+rule" : "string_object"
+            ".rul" : "string_object"
          },
          {
-            "+rule" : "number_object"
+            ".rul" : "number_object"
          },
          {
-            "+rule" : "transform_object"
+            ".rul" : "transform_object"
          }
       ]
    },
    "code_section" : {
-      "+any" : [
+      "+mod" : "*",
+      ".any" : [
          {
-            "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
+            ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
          },
          {
-            "+rule" : "assignment_statement"
+            ".rul" : "assignment_statement"
          },
          {
-            "+rule" : "code_statement"
+            ".rul" : "code_statement"
          }
-      ],
-      "<" : "*"
+      ]
    },
    "code_statement" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "code_expression"
+            ".rul" : "code_expression"
          },
          {
-            "+rule" : "assertion_call",
-            "<" : "?"
+            "+mod" : "?",
+            ".rul" : "assertion_call"
          },
          {
-            "+rule" : "semicolon"
+            ".rul" : "semicolon"
          }
       ]
    },
    "comment" : {
-      "+re" : "\\#.*\\r?\\n"
+      ".rgx" : "\\#.*\\r?\\n"
    },
    "core_transform" : {
-      "+re" : "([A-Z]\\w*)"
+      ".rgx" : "([A-Z]\\w*)"
    },
    "data_block" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "block_header"
+            ".rul" : "block_header"
          },
          {
-            "+any" : [
+            "+mod" : "*",
+            ".any" : [
                {
-                  "+rule" : "blank_line"
+                  ".rul" : "blank_line"
                },
                {
-                  "+rule" : "comment"
+                  ".rul" : "comment"
                }
-            ],
-            "<" : "*"
+            ]
          },
          {
-            "+rule" : "block_point",
-            "<" : "*"
+            "+mod" : "*",
+            ".rul" : "block_point"
          }
       ]
    },
    "data_section" : {
-      "+rule" : "data_block",
-      "<" : "*"
+      "+mod" : "*",
+      ".rul" : "data_block"
    },
    "double_quoted_string" : {
-      "+re" : "(?:\"(([^\\n\\\\\"]|\\\\\"|\\\\\\\\|\\\\[0nt])*?)\")"
+      ".rgx" : "(?:\"(([^\\n\\\\\"]|\\\\\"|\\\\\\\\|\\\\[0nt])*?)\")"
    },
    "function_object" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "function_signature",
-            "<" : "?"
+            "+mod" : "?",
+            ".rul" : "function_signature"
          },
          {
-            "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\{(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
+            ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\{(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
          },
          {
-            "+any" : [
+            "+mod" : "*",
+            ".any" : [
                {
-                  "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
+                  ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
                },
                {
-                  "+rule" : "assignment_statement"
+                  ".rul" : "assignment_statement"
                },
                {
-                  "+rule" : "code_statement"
+                  ".rul" : "code_statement"
                }
-            ],
-            "<" : "*"
+            ]
          },
          {
-            "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\}"
+            ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\}"
          }
       ]
    },
    "function_signature" : {
-      "+all" : [
+      ".all" : [
          {
-            "+re" : "\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
+            ".rgx" : "\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
          },
          {
-            "+rule" : "function_variables",
-            "<" : "?"
+            "+mod" : "?",
+            ".rul" : "function_variables"
          },
          {
-            "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\)"
+            ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\)"
          }
       ]
    },
    "function_variable" : {
-      "+re" : "([a-zA-Z]\\w*)"
+      ".rgx" : "([a-zA-Z]\\w*)"
    },
    "function_variables" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "function_variable"
+            ".rul" : "function_variable"
          },
          {
-            "+all" : [
+            "+mod" : "*",
+            ".all" : [
                {
-                  "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
+                  ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
                },
                {
-                  "+rule" : "function_variable"
+                  ".rul" : "function_variable"
                }
-            ],
-            "<" : "*"
+            ]
          }
       ]
    },
    "lines_point" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "point_marker"
+            ".rul" : "point_marker"
          },
          {
-            "+re" : "[\\ \\t]+"
+            ".rgx" : "[\\ \\t]+"
          },
          {
-            "+rule" : "point_name"
+            ".rul" : "point_name"
          },
          {
-            "+re" : "[\\ \\t]*\\r?\\n"
+            ".rgx" : "[\\ \\t]*\\r?\\n"
          },
          {
-            "+rule" : "point_lines"
+            ".rul" : "point_lines"
          }
       ]
    },
    "number" : {
-      "+re" : "([0-9]+)"
+      ".rgx" : "([0-9]+)"
    },
    "number_object" : {
-      "+rule" : "number"
+      ".rul" : "number"
    },
    "phrase_point" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "point_marker"
+            ".rul" : "point_marker"
          },
          {
-            "+re" : "[\\ \\t]+"
+            ".rgx" : "[\\ \\t]+"
          },
          {
-            "+rule" : "point_name"
+            ".rul" : "point_name"
          },
          {
-            "+re" : ":[\\ \\t]"
+            ".rgx" : ":[\\ \\t]"
          },
          {
-            "+rule" : "point_phrase"
+            ".rul" : "point_phrase"
          },
          {
-            "+re" : "\\r?\\n"
+            ".rgx" : "\\r?\\n"
          },
          {
-            "+re" : "(?:\\#.*\\r?\\n|[\\ \\t]*\\r?\\n)*"
+            ".rgx" : "(?:\\#.*\\r?\\n|[\\ \\t]*\\r?\\n)*"
          }
       ]
    },
    "point_lines" : {
-      "+re" : "((?:(?!===|---).*\\r?\\n)*)"
+      ".rgx" : "((?:(?!===|---).*\\r?\\n)*)"
    },
    "point_marker" : {
-      "+re" : "---"
+      ".rgx" : "---"
    },
    "point_name" : {
-      "+re" : "([a-z]\\w*|[A-Z]\\w*)"
+      ".rgx" : "([a-z]\\w*|[A-Z]\\w*)"
    },
    "point_object" : {
-      "+re" : "(\\*[a-z]\\w*)"
+      ".rgx" : "(\\*[a-z]\\w*)"
    },
    "point_phrase" : {
-      "+re" : "(([^\\ \\t\\n\\#](?:[^\\n\\#]*[^\\ \\t\\n\\#])?))"
+      ".rgx" : "(([^\\ \\t\\n\\#](?:[^\\n\\#]*[^\\ \\t\\n\\#])?))"
    },
    "quoted_string" : {
-      "+any" : [
+      ".any" : [
          {
-            "+rule" : "single_quoted_string"
+            ".rul" : "single_quoted_string"
          },
          {
-            "+rule" : "double_quoted_string"
+            ".rul" : "double_quoted_string"
          }
       ]
    },
    "semicolon" : {
-      "+any" : [
+      ".any" : [
          {
-            "+re" : ";"
+            ".rgx" : ";"
          },
          {
-            "+error" : "You seem to be missing a semicolon"
+            ".err" : "You seem to be missing a semicolon"
          }
       ]
    },
    "single_quoted_string" : {
-      "+re" : "(?:'(([^\\n\\\\']|\\\\'|\\\\\\\\)*?)')"
+      ".rgx" : "(?:'(([^\\n\\\\']|\\\\'|\\\\\\\\)*?)')"
    },
    "string_object" : {
-      "+rule" : "quoted_string"
+      ".rul" : "quoted_string"
    },
    "transform_argument" : {
-      "+rule" : "code_expression"
+      ".rul" : "code_expression"
    },
    "transform_argument_list" : {
-      "+all" : [
+      ".all" : [
          {
-            "+re" : "\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
+            ".rgx" : "\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
          },
          {
-            "+rule" : "transform_arguments",
-            "<" : "?"
+            "+mod" : "?",
+            ".rul" : "transform_arguments"
          },
          {
-            "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\)"
+            ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\)"
          }
       ]
    },
    "transform_arguments" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "transform_argument"
+            ".rul" : "transform_argument"
          },
          {
-            "+all" : [
+            "+mod" : "*",
+            ".all" : [
                {
-                  "+re" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
+                  ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
                },
                {
-                  "+rule" : "transform_argument"
+                  ".rul" : "transform_argument"
                }
-            ],
-            "<" : "*"
+            ]
          }
       ]
    },
    "transform_name" : {
-      "+any" : [
+      ".any" : [
          {
-            "+rule" : "user_transform"
+            ".rul" : "user_transform"
          },
          {
-            "+rule" : "core_transform"
+            ".rul" : "core_transform"
          }
       ]
    },
    "transform_object" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "transform_name"
+            ".rul" : "transform_name"
          },
          {
-            "+rule" : "transform_argument_list",
-            "<" : "?"
+            "+mod" : "?",
+            ".rul" : "transform_argument_list"
          }
       ]
    },
    "unit_call" : {
-      "+all" : [
+      ".all" : [
          {
-            "+rule" : "assertion_call_test",
-            "<" : "!"
+            "+mod" : "!",
+            ".rul" : "assertion_call_test"
          },
          {
-            "+rule" : "call_indicator"
+            ".rul" : "call_indicator"
          },
          {
-            "+rule" : "code_object"
+            ".rul" : "code_object"
          }
       ]
    },
    "unquoted_string" : {
-      "+re" : "([^\\ \\t\\n\\#](?:[^\\n\\#]*[^\\ \\t\\n\\#])?)"
+      ".rgx" : "([^\\ \\t\\n\\#](?:[^\\n\\#]*[^\\ \\t\\n\\#])?)"
    },
    "user_transform" : {
-      "+re" : "([a-z]\\w*)"
+      ".rgx" : "([a-z]\\w*)"
    },
    "variable_name" : {
-      "+re" : "([a-zA-Z]\\w*)"
+      ".rgx" : "([a-zA-Z]\\w*)"
    }
 }
