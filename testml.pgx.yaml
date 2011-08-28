@@ -4,159 +4,159 @@ NEVER:
   .rgx: (?!)
 TOP:
   .all:
-  - .rul: NEVER
-  - .rul: code_section
-  - .rul: data_section
+  - .ref: NEVER
+  - .ref: code_section
+  - .ref: data_section
 assertion_call:
   .any:
-  - .rul: assertion_eq
-  - .rul: assertion_ok
-  - .rul: assertion_has
+  - .ref: assertion_eq
+  - .ref: assertion_ok
+  - .ref: assertion_has
 assertion_call_test:
   .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)(?:EQ|OK|HAS)
 assertion_eq:
   .any:
-  - .rul: assertion_operator_eq
-  - .rul: assertion_function_eq
+  - .ref: assertion_operator_eq
+  - .ref: assertion_function_eq
 assertion_function_eq:
   .all:
   - .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)EQ\(
-  - .rul: code_expression
+  - .ref: code_expression
   - .rgx: \)
 assertion_function_has:
   .all:
   - .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)HAS\(
-  - .rul: code_expression
+  - .ref: code_expression
   - .rgx: \)
 assertion_function_ok:
   .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)OK(?:\((?:[\
     \t]|\r?\n|\#.*\r?\n)*\))?
 assertion_has:
   .any:
-  - .rul: assertion_operator_has
-  - .rul: assertion_function_has
+  - .ref: assertion_operator_has
+  - .ref: assertion_function_has
 assertion_ok:
-  .rul: assertion_function_ok
+  .ref: assertion_function_ok
 assertion_operator_eq:
   .all:
   - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+==(?:[\ \t]|\r?\n|\#.*\r?\n)+
-  - .rul: code_expression
+  - .ref: code_expression
 assertion_operator_has:
   .all:
   - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+~~(?:[\ \t]|\r?\n|\#.*\r?\n)+
-  - .rul: code_expression
+  - .ref: code_expression
 assignment_statement:
   .all:
-  - .rul: variable_name
+  - .ref: variable_name
   - .rgx: \s+=\s+
-  - .rul: code_expression
-  - .rul: semicolon
+  - .ref: code_expression
+  - .ref: semicolon
 blank_line:
   .rgx: '[\ \t]*\r?\n'
 block_header:
   .all:
-  - .rul: block_marker
+  - .ref: block_marker
   - +mod: '?'
     .all:
     - .rgx: '[\ \t]+'
-    - .rul: block_label
+    - .ref: block_label
   - .rgx: '[\ \t]*\r?\n'
 block_label:
-  .rul: unquoted_string
+  .ref: unquoted_string
 block_marker:
   .rgx: ===
 block_point:
   .any:
-  - .rul: lines_point
-  - .rul: phrase_point
+  - .ref: lines_point
+  - .ref: phrase_point
 call_indicator:
   .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)
 code_expression:
   .all:
-  - .rul: code_object
+  - .ref: code_object
   - +mod: '*'
-    .rul: unit_call
+    .ref: unit_call
 code_object:
   .any:
-  - .rul: function_object
-  - .rul: point_object
-  - .rul: string_object
-  - .rul: number_object
-  - .rul: transform_object
+  - .ref: function_object
+  - .ref: point_object
+  - .ref: string_object
+  - .ref: number_object
+  - .ref: transform_object
 code_section:
   +mod: '*'
   .any:
   - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+
-  - .rul: assignment_statement
-  - .rul: code_statement
+  - .ref: assignment_statement
+  - .ref: code_statement
 code_statement:
   .all:
-  - .rul: code_expression
+  - .ref: code_expression
   - +mod: '?'
-    .rul: assertion_call
-  - .rul: semicolon
+    .ref: assertion_call
+  - .ref: semicolon
 comment:
   .rgx: \#.*\r?\n
 core_transform:
   .rgx: ([A-Z]\w*)
 data_block:
   .all:
-  - .rul: block_header
+  - .ref: block_header
   - +mod: '*'
     .any:
-    - .rul: blank_line
-    - .rul: comment
+    - .ref: blank_line
+    - .ref: comment
   - +mod: '*'
-    .rul: block_point
+    .ref: block_point
 data_section:
   +mod: '*'
-  .rul: data_block
+  .ref: data_block
 double_quoted_string:
   .rgx: (?:"(([^\n\\"]|\\"|\\\\|\\[0nt])*?)")
 function_object:
   .all:
   - +mod: '?'
-    .rul: function_signature
+    .ref: function_signature
   - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\{(?:[\ \t]|\r?\n|\#.*\r?\n)*
   - +mod: '*'
     .any:
     - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+
-    - .rul: assignment_statement
-    - .rul: code_statement
+    - .ref: assignment_statement
+    - .ref: code_statement
   - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\}
 function_signature:
   .all:
   - .rgx: \((?:[\ \t]|\r?\n|\#.*\r?\n)*
   - +mod: '?'
-    .rul: function_variables
+    .ref: function_variables
   - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
 function_variable:
   .rgx: ([a-zA-Z]\w*)
 function_variables:
   .all:
-  - .rul: function_variable
+  - .ref: function_variable
   - +mod: '*'
     .all:
     - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
-    - .rul: function_variable
+    - .ref: function_variable
 lines_point:
   .all:
-  - .rul: point_marker
+  - .ref: point_marker
   - .rgx: '[\ \t]+'
-  - .rul: point_name
+  - .ref: point_name
   - .rgx: '[\ \t]*\r?\n'
-  - .rul: point_lines
+  - .ref: point_lines
 number:
   .rgx: ([0-9]+)
 number_object:
-  .rul: number
+  .ref: number
 phrase_point:
   .all:
-  - .rul: point_marker
+  - .ref: point_marker
   - .rgx: '[\ \t]+'
-  - .rul: point_name
+  - .ref: point_name
   - .rgx: :[\ \t]
-  - .rul: point_phrase
+  - .ref: point_phrase
   - .rgx: \r?\n
   - .rgx: (?:\#.*\r?\n|[\ \t]*\r?\n)*
 point_lines:
@@ -171,8 +171,8 @@ point_phrase:
   .rgx: (([^\ \t\n\#](?:[^\n\#]*[^\ \t\n\#])?))
 quoted_string:
   .any:
-  - .rul: single_quoted_string
-  - .rul: double_quoted_string
+  - .ref: single_quoted_string
+  - .ref: double_quoted_string
 semicolon:
   .any:
   - .rgx: ;
@@ -180,37 +180,37 @@ semicolon:
 single_quoted_string:
   .rgx: (?:'(([^\n\\']|\\'|\\\\)*?)')
 string_object:
-  .rul: quoted_string
+  .ref: quoted_string
 transform_argument:
-  .rul: code_expression
+  .ref: code_expression
 transform_argument_list:
   .all:
   - .rgx: \((?:[\ \t]|\r?\n|\#.*\r?\n)*
   - +mod: '?'
-    .rul: transform_arguments
+    .ref: transform_arguments
   - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
 transform_arguments:
   .all:
-  - .rul: transform_argument
+  - .ref: transform_argument
   - +mod: '*'
     .all:
     - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
-    - .rul: transform_argument
+    - .ref: transform_argument
 transform_name:
   .any:
-  - .rul: user_transform
-  - .rul: core_transform
+  - .ref: user_transform
+  - .ref: core_transform
 transform_object:
   .all:
-  - .rul: transform_name
+  - .ref: transform_name
   - +mod: '?'
-    .rul: transform_argument_list
+    .ref: transform_argument_list
 unit_call:
   .all:
   - +mod: '!'
-    .rul: assertion_call_test
-  - .rul: call_indicator
-  - .rul: code_object
+    .ref: assertion_call_test
+  - .ref: call_indicator
+  - .ref: code_object
 unquoted_string:
   .rgx: ([^\ \t\n\#](?:[^\n\#]*[^\ \t\n\#])?)
 user_transform:
