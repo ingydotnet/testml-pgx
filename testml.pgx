@@ -1,4 +1,4 @@
-TOP: <NEVER> <code_section> <data_section>
+testml_document: <code_section> <data_section>?
 
 # General Tokens
 escape: /[0nt]/
@@ -7,11 +7,11 @@ blank_line: /<BLANK>*<EOL>/
 comment: /<HASH><line>/
 ws: /(?:<BLANK>|<EOL>|<comment>)/
 
-quoted_string: <single_quoted_string> | <double_quoted_string>
+quoted_string: -<single_quoted_string> | -<double_quoted_string>
 
-single_quoted_string: /(?:<SINGLE>(([^<BREAK><BACK><SINGLE>]|<BACK><SINGLE>|<BACK><BACK>)*?)<SINGLE>)/
+single_quoted_string: /(?:<SINGLE>((?:[^<BREAK><BACK><SINGLE>]|<BACK><SINGLE>|<BACK><BACK>)*?)<SINGLE>)/
 
-double_quoted_string: /(?:<DOUBLE>(([^<BREAK><BACK><DOUBLE>]|<BACK><DOUBLE>|<BACK><BACK>|<BACK><escape>)*?)<DOUBLE>)/
+double_quoted_string: /(?:<DOUBLE>((?:[^<BREAK><BACK><DOUBLE>]|<BACK><DOUBLE>|<BACK><BACK>|<BACK><escape>)*?)<DOUBLE>)/
 
 unquoted_string: /([^<BLANKS><BREAK><HASH>](?:[^<BREAK><HASH>]*[^<BLANKS><BREAK><HASH>])?)/
 
@@ -39,7 +39,7 @@ semicolon:
 
 code_expression:
   <code_object>
-  <unit_call>*
+  -<unit_call>*
 
 unit_call:
   !<assertion_call_test>
@@ -54,10 +54,12 @@ code_object:
   <transform_object>
 
 function_object:
-  <function_signature>?
-  /<ws>*<LCURLY><ws>*/
+  -<function_signature>?
+  <function_start>
   [ /<ws>+/ | <assignment_statement> | <code_statement>]*
   /<ws>*<RCURLY>/
+
+function_start: /<ws>*(<LCURLY>)<ws>*/
 
 function_signature:
   /<LPAREN><ws>*/
@@ -90,7 +92,7 @@ call_indicator: /(?:<DOT><ws>*|<ws>*<DOT>)/
 
 transform_argument_list:
   /<LPAREN><ws>*/
-  <transform_arguments>?
+  -<transform_arguments>?
   /<ws>*<RPAREN>/
 
 transform_arguments:
@@ -116,7 +118,7 @@ assertion_function_eq:
 
 assertion_ok: <assertion_function_ok>
 
-assertion_function_ok: /<call_indicator>OK<empty_parens>?/
+assertion_function_ok: /<call_indicator>(OK)<empty_parens>?/
 
 assertion_has: <assertion_operator_has> | <assertion_function_has>
 
@@ -136,8 +138,8 @@ data_section: <data_block>*
 
 data_block:
   <block_header>
-  [ <blank_line> | <comment> ]*
-  <block_point>*
+  .[ <blank_line> | <comment> ]*
+  -<block_point>*
 
 block_header:
   <block_marker>
@@ -176,4 +178,4 @@ user_point_name:  /<LOWER><WORD>*/
 
 core_point_name:  /<UPPER><WORD>*/
 
-point_phrase: /(<unquoted_string>)/
+point_phrase: -<unquoted_string>

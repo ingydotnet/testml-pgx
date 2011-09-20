@@ -1,21 +1,5 @@
 {
-   "+top" : "TOP",
-   "NEVER" : {
-      ".rgx" : "(?!)"
-   },
-   "TOP" : {
-      ".all" : [
-         {
-            ".ref" : "NEVER"
-         },
-         {
-            ".ref" : "code_section"
-         },
-         {
-            ".ref" : "data_section"
-         }
-      ]
-   },
+   "+top" : "testml_document",
    "assertion_call" : {
       ".any" : [
          {
@@ -69,7 +53,7 @@
       ]
    },
    "assertion_function_ok" : {
-      ".rgx" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)OK(?:\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\))?"
+      ".rgx" : "(?:\\.(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*|(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\.)(OK)(?:\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\))?"
    },
    "assertion_has" : {
       ".any" : [
@@ -129,7 +113,7 @@
             ".ref" : "block_marker"
          },
          {
-            "+mod" : "?",
+            "+qty" : "?",
             ".all" : [
                {
                   ".rgx" : "[\\ \\t]+"
@@ -169,7 +153,8 @@
             ".ref" : "code_object"
          },
          {
-            "+mod" : "*",
+            "+qty" : "*",
+            "-pass" : 1,
             ".ref" : "unit_call"
          }
       ]
@@ -194,7 +179,7 @@
       ]
    },
    "code_section" : {
-      "+mod" : "*",
+      "+qty" : "*",
       ".any" : [
          {
             ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
@@ -213,7 +198,7 @@
             ".ref" : "code_expression"
          },
          {
-            "+mod" : "?",
+            "+qty" : "?",
             ".ref" : "assertion_call"
          },
          {
@@ -233,7 +218,8 @@
             ".ref" : "block_header"
          },
          {
-            "+mod" : "*",
+            "+qty" : "*",
+            "-skip" : 1,
             ".any" : [
                {
                   ".ref" : "blank_line"
@@ -244,29 +230,31 @@
             ]
          },
          {
-            "+mod" : "*",
+            "+qty" : "*",
+            "-pass" : 1,
             ".ref" : "block_point"
          }
       ]
    },
    "data_section" : {
-      "+mod" : "*",
+      "+qty" : "*",
       ".ref" : "data_block"
    },
    "double_quoted_string" : {
-      ".rgx" : "(?:\"(([^\\n\\\\\"]|\\\\\"|\\\\\\\\|\\\\[0nt])*?)\")"
+      ".rgx" : "(?:\"((?:[^\\n\\\\\"]|\\\\\"|\\\\\\\\|\\\\[0nt])*?)\")"
    },
    "function_object" : {
       ".all" : [
          {
-            "+mod" : "?",
+            "+qty" : "?",
+            "-pass" : 1,
             ".ref" : "function_signature"
          },
          {
-            ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\{(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
+            ".ref" : "function_start"
          },
          {
-            "+mod" : "*",
+            "+qty" : "*",
             ".any" : [
                {
                   ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
@@ -290,13 +278,16 @@
             ".rgx" : "\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
          },
          {
-            "+mod" : "?",
+            "+qty" : "?",
             ".ref" : "function_variables"
          },
          {
             ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\)"
          }
       ]
+   },
+   "function_start" : {
+      ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*(\\{)(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
    },
    "function_variable" : {
       ".rgx" : "([a-zA-Z]\\w*)"
@@ -307,7 +298,7 @@
             ".ref" : "function_variable"
          },
          {
-            "+mod" : "*",
+            "+qty" : "*",
             ".all" : [
                {
                   ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
@@ -370,10 +361,10 @@
       ]
    },
    "point_lines" : {
-      ".rgx" : "((?:(?!===|---).*\\r?\\n)*)"
+      ".rgx" : "((?:(?!===|\\-\\-\\-).*\\r?\\n)*)"
    },
    "point_marker" : {
-      ".rgx" : "---"
+      ".rgx" : "\\-\\-\\-"
    },
    "point_name" : {
       ".rgx" : "([a-z]\\w*|[A-Z]\\w*)"
@@ -382,14 +373,17 @@
       ".rgx" : "(\\*[a-z]\\w*)"
    },
    "point_phrase" : {
-      ".rgx" : "(([^\\ \\t\\n\\#](?:[^\\n\\#]*[^\\ \\t\\n\\#])?))"
+      "-pass" : 1,
+      ".ref" : "unquoted_string"
    },
    "quoted_string" : {
       ".any" : [
          {
+            "-pass" : 1,
             ".ref" : "single_quoted_string"
          },
          {
+            "-pass" : 1,
             ".ref" : "double_quoted_string"
          }
       ]
@@ -405,10 +399,21 @@
       ]
    },
    "single_quoted_string" : {
-      ".rgx" : "(?:'(([^\\n\\\\']|\\\\'|\\\\\\\\)*?)')"
+      ".rgx" : "(?:'((?:[^\\n\\\\']|\\\\'|\\\\\\\\)*?)')"
    },
    "string_object" : {
       ".ref" : "quoted_string"
+   },
+   "testml_document" : {
+      ".all" : [
+         {
+            ".ref" : "code_section"
+         },
+         {
+            "+qty" : "?",
+            ".ref" : "data_section"
+         }
+      ]
    },
    "transform_argument" : {
       ".ref" : "code_expression"
@@ -419,7 +424,8 @@
             ".rgx" : "\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
          },
          {
-            "+mod" : "?",
+            "+qty" : "?",
+            "-pass" : 1,
             ".ref" : "transform_arguments"
          },
          {
@@ -433,7 +439,7 @@
             ".ref" : "transform_argument"
          },
          {
-            "+mod" : "*",
+            "+qty" : "*",
             ".all" : [
                {
                   ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
@@ -461,7 +467,7 @@
             ".ref" : "transform_name"
          },
          {
-            "+mod" : "?",
+            "+qty" : "?",
             ".ref" : "transform_argument_list"
          }
       ]
@@ -469,7 +475,7 @@
    "unit_call" : {
       ".all" : [
          {
-            "+mod" : "!",
+            "+asr" : -1,
             ".ref" : "assertion_call_test"
          },
          {
