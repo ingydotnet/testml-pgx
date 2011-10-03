@@ -3,12 +3,15 @@
    "assertion_call" : {
       ".any" : [
          {
+            "-wrap" : 1,
             ".ref" : "assertion_eq"
          },
          {
+            "-wrap" : 1,
             ".ref" : "assertion_ok"
          },
          {
+            "-wrap" : 1,
             ".ref" : "assertion_has"
          }
       ]
@@ -19,9 +22,11 @@
    "assertion_eq" : {
       ".any" : [
          {
+            "-wrap" : 1,
             ".ref" : "assertion_operator_eq"
          },
          {
+            "-wrap" : 1,
             ".ref" : "assertion_function_eq"
          }
       ]
@@ -58,9 +63,11 @@
    "assertion_has" : {
       ".any" : [
          {
+            "-wrap" : 1,
             ".ref" : "assertion_operator_has"
          },
          {
+            "-wrap" : 1,
             ".ref" : "assertion_function_has"
          }
       ]
@@ -81,7 +88,7 @@
    "assertion_operator_has" : {
       ".all" : [
          {
-            ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+~~(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
+            ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
          },
          {
             ".ref" : "code_expression"
@@ -113,7 +120,7 @@
             ".ref" : "block_marker"
          },
          {
-            "+qty" : "?",
+            "+max" : 1,
             ".all" : [
                {
                   ".rgx" : "[\\ \\t]+"
@@ -153,8 +160,7 @@
             ".ref" : "code_object"
          },
          {
-            "+qty" : "*",
-            "-pass" : 1,
+            "+min" : 0,
             ".ref" : "unit_call"
          }
       ]
@@ -179,7 +185,7 @@
       ]
    },
    "code_section" : {
-      "+qty" : "*",
+      "+min" : 0,
       ".any" : [
          {
             ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
@@ -198,7 +204,7 @@
             ".ref" : "code_expression"
          },
          {
-            "+qty" : "?",
+            "+max" : 1,
             ".ref" : "assertion_call"
          },
          {
@@ -218,7 +224,7 @@
             ".ref" : "block_header"
          },
          {
-            "+qty" : "*",
+            "+min" : 0,
             "-skip" : 1,
             ".any" : [
                {
@@ -230,14 +236,13 @@
             ]
          },
          {
-            "+qty" : "*",
-            "-pass" : 1,
+            "+min" : 0,
             ".ref" : "block_point"
          }
       ]
    },
    "data_section" : {
-      "+qty" : "*",
+      "+min" : 0,
       ".ref" : "data_block"
    },
    "double_quoted_string" : {
@@ -246,15 +251,14 @@
    "function_object" : {
       ".all" : [
          {
-            "+qty" : "?",
-            "-pass" : 1,
+            "+max" : 1,
             ".ref" : "function_signature"
          },
          {
             ".ref" : "function_start"
          },
          {
-            "+qty" : "*",
+            "+min" : 0,
             ".any" : [
                {
                   ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
@@ -278,7 +282,7 @@
             ".rgx" : "\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
          },
          {
-            "+qty" : "?",
+            "+max" : 1,
             ".ref" : "function_variables"
          },
          {
@@ -293,22 +297,11 @@
       ".rgx" : "([a-zA-Z]\\w*)"
    },
    "function_variables" : {
-      ".all" : [
-         {
-            ".ref" : "function_variable"
-         },
-         {
-            "+qty" : "*",
-            ".all" : [
-               {
-                  ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
-               },
-               {
-                  ".ref" : "function_variable"
-               }
-            ]
-         }
-      ]
+      "+min" : 1,
+      ".ref" : "function_variable",
+      ".sep" : {
+         ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
+      }
    },
    "lines_point" : {
       ".all" : [
@@ -373,17 +366,14 @@
       ".rgx" : "(\\*[a-z]\\w*)"
    },
    "point_phrase" : {
-      "-pass" : 1,
       ".ref" : "unquoted_string"
    },
    "quoted_string" : {
       ".any" : [
          {
-            "-pass" : 1,
             ".ref" : "single_quoted_string"
          },
          {
-            "-pass" : 1,
             ".ref" : "double_quoted_string"
          }
       ]
@@ -410,7 +400,7 @@
             ".ref" : "code_section"
          },
          {
-            "+qty" : "?",
+            "+max" : 1,
             ".ref" : "data_section"
          }
       ]
@@ -424,30 +414,14 @@
             ".rgx" : "\\((?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
          },
          {
-            "+qty" : "?",
-            "-pass" : 1,
-            ".ref" : "transform_arguments"
+            "+min" : 0,
+            ".ref" : "transform_argument",
+            ".sep" : {
+               ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
+            }
          },
          {
             ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*\\)"
-         }
-      ]
-   },
-   "transform_arguments" : {
-      ".all" : [
-         {
-            ".ref" : "transform_argument"
-         },
-         {
-            "+qty" : "*",
-            ".all" : [
-               {
-                  ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
-               },
-               {
-                  ".ref" : "transform_argument"
-               }
-            ]
          }
       ]
    },
@@ -467,7 +441,7 @@
             ".ref" : "transform_name"
          },
          {
-            "+qty" : "?",
+            "+max" : 1,
             ".ref" : "transform_argument_list"
          }
       ]

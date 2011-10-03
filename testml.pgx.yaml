@@ -2,15 +2,20 @@
 +top: testml_document
 assertion_call:
   .any:
-  - .ref: assertion_eq
-  - .ref: assertion_ok
-  - .ref: assertion_has
+  - -wrap: 1
+    .ref: assertion_eq
+  - -wrap: 1
+    .ref: assertion_ok
+  - -wrap: 1
+    .ref: assertion_has
 assertion_call_test:
   .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)(?:EQ|OK|HAS)
 assertion_eq:
   .any:
-  - .ref: assertion_operator_eq
-  - .ref: assertion_function_eq
+  - -wrap: 1
+    .ref: assertion_operator_eq
+  - -wrap: 1
+    .ref: assertion_function_eq
 assertion_function_eq:
   .all:
   - .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)EQ\(
@@ -26,8 +31,10 @@ assertion_function_ok:
     \t]|\r?\n|\#.*\r?\n)*\))?
 assertion_has:
   .any:
-  - .ref: assertion_operator_has
-  - .ref: assertion_function_has
+  - -wrap: 1
+    .ref: assertion_operator_has
+  - -wrap: 1
+    .ref: assertion_function_has
 assertion_ok:
   .ref: assertion_function_ok
 assertion_operator_eq:
@@ -36,7 +43,8 @@ assertion_operator_eq:
   - .ref: code_expression
 assertion_operator_has:
   .all:
-  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+~~(?:[\ \t]|\r?\n|\#.*\r?\n)+
+  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+(?:[\ \t]|\r?\n|\#.*\r?\n)(?:[\ \t]|\r?\n|\#.*\r?\n)(?:[\
+      \t]|\r?\n|\#.*\r?\n)+
   - .ref: code_expression
 assignment_statement:
   .all:
@@ -49,7 +57,7 @@ blank_line:
 block_header:
   .all:
   - .ref: block_marker
-  - +qty: '?'
+  - +max: 1
     .all:
     - .rgx: '[\ \t]+'
     - .ref: block_label
@@ -67,8 +75,7 @@ call_indicator:
 code_expression:
   .all:
   - .ref: code_object
-  - +qty: '*'
-    -pass: 1
+  - +min: 0
     .ref: unit_call
 code_object:
   .any:
@@ -78,7 +85,7 @@ code_object:
   - .ref: number_object
   - .ref: transform_object
 code_section:
-  +qty: '*'
+  +min: 0
   .any:
   - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+
   - .ref: assignment_statement
@@ -86,7 +93,7 @@ code_section:
 code_statement:
   .all:
   - .ref: code_expression
-  - +qty: '?'
+  - +max: 1
     .ref: assertion_call
   - .ref: semicolon
 comment:
@@ -96,26 +103,24 @@ core_transform:
 data_block:
   .all:
   - .ref: block_header
-  - +qty: '*'
+  - +min: 0
     -skip: 1
     .any:
     - .ref: blank_line
     - .ref: comment
-  - +qty: '*'
-    -pass: 1
+  - +min: 0
     .ref: block_point
 data_section:
-  +qty: '*'
+  +min: 0
   .ref: data_block
 double_quoted_string:
   .rgx: (?:"((?:[^\n\\"]|\\"|\\\\|\\[0nt])*?)")
 function_object:
   .all:
-  - +qty: '?'
-    -pass: 1
+  - +max: 1
     .ref: function_signature
   - .ref: function_start
-  - +qty: '*'
+  - +min: 0
     .any:
     - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+
     - .ref: assignment_statement
@@ -124,7 +129,7 @@ function_object:
 function_signature:
   .all:
   - .rgx: \((?:[\ \t]|\r?\n|\#.*\r?\n)*
-  - +qty: '?'
+  - +max: 1
     .ref: function_variables
   - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
 function_start:
@@ -132,12 +137,10 @@ function_start:
 function_variable:
   .rgx: ([a-zA-Z]\w*)
 function_variables:
-  .all:
-  - .ref: function_variable
-  - +qty: '*'
-    .all:
-    - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
-    - .ref: function_variable
+  +min: 1
+  .ref: function_variable
+  .sep:
+    .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
 lines_point:
   .all:
   - .ref: point_marker
@@ -167,14 +170,11 @@ point_name:
 point_object:
   .rgx: (\*[a-z]\w*)
 point_phrase:
-  -pass: 1
   .ref: unquoted_string
 quoted_string:
   .any:
-  - -pass: 1
-    .ref: single_quoted_string
-  - -pass: 1
-    .ref: double_quoted_string
+  - .ref: single_quoted_string
+  - .ref: double_quoted_string
 semicolon:
   .any:
   - .rgx: ;
@@ -186,24 +186,18 @@ string_object:
 testml_document:
   .all:
   - .ref: code_section
-  - +qty: '?'
+  - +max: 1
     .ref: data_section
 transform_argument:
   .ref: code_expression
 transform_argument_list:
   .all:
   - .rgx: \((?:[\ \t]|\r?\n|\#.*\r?\n)*
-  - +qty: '?'
-    -pass: 1
-    .ref: transform_arguments
+  - +min: 0
+    .ref: transform_argument
+    .sep:
+      .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
   - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
-transform_arguments:
-  .all:
-  - .ref: transform_argument
-  - +qty: '*'
-    .all:
-    - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
-    - .ref: transform_argument
 transform_name:
   .any:
   - .ref: user_transform
@@ -211,7 +205,7 @@ transform_name:
 transform_object:
   .all:
   - .ref: transform_name
-  - +qty: '?'
+  - +max: 1
     .ref: transform_argument_list
 unit_call:
   .all:
