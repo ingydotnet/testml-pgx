@@ -43,8 +43,7 @@ assertion_operator_eq:
   - .ref: code_expression
 assertion_operator_has:
   .all:
-  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+(?:[\ \t]|\r?\n|\#.*\r?\n)(?:[\ \t]|\r?\n|\#.*\r?\n)(?:[\
-      \t]|\r?\n|\#.*\r?\n)+
+  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+\~\~(?:[\ \t]|\r?\n|\#.*\r?\n)+
   - .ref: code_expression
 assignment_statement:
   .all:
