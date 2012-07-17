@@ -1,6 +1,6 @@
 testml_document:
-    <code_section>
-    <data_section>?
+    code_section
+    data_section?
 
 # General Tokens
 escape: / [0nt] /
@@ -15,8 +15,8 @@ ws: /(:
 
 # Strings
 quoted_string:
-    <single_quoted_string> |
-    <double_quoted_string>
+    single_quoted_string |
+    double_quoted_string
 
 single_quoted_string:
     /(:
@@ -56,72 +56,72 @@ number: / (<DIGIT>+) /
 # TestML Code Section
 code_section: (
         ~~ |
-        <assignment_statement> |
-        <code_statement>
+        assignment_statement |
+        code_statement
     )*
 
 assignment_statement:
-    <variable_name>
+    variable_name
     /<WS>+ <EQUAL> <WS>+/
-    <code_expression> 
-    <semicolon>
+    code_expression
+    semicolon
 
 variable_name: /(<ALPHA><WORD>*)/
 
 code_statement:
-    <code_expression>
-    <assertion_call>?
-    <semicolon>
+    code_expression
+    assertion_call?
+    semicolon
 
 semicolon:
     /<SEMI>/ |
     `You seem to be missing a semicolon`
 
 code_expression:
-    <code_object>
-    <unit_call>*
+    code_object
+    unit_call*
 
 unit_call:
-    !<assertion_call_test>
-    <call_indicator>
-    <code_object>
+    !assertion_call_test
+    call_indicator
+    code_object
 
 code_object:
-    <function_object> |
-    <point_object> |
-    <string_object> |
-    <number_object> |
-    <transform_object>
+    function_object |
+    point_object |
+    string_object |
+    number_object |
+    transform_object
 
 function_object:
-    <function_signature>?
-    <function_start>
-    ( ~~ | <assignment_statement> | <code_statement> )*
+    function_signature?
+    function_start
+    ( ~~ | assignment_statement | code_statement )*
     / ~ <RCURLY> /
 
 function_start: / ~ (<LCURLY>) ~ /
 
 function_signature:
     /<LPAREN>~/
-    <function_variables>?
+    function_variables?
     /~<RPAREN>/
 
 function_variables: 
-    <function_variable>+ % / ~ <COMMA> ~ /
+    function_variable+ % / ~ <COMMA> ~ /
 
 function_variable: /(<ALPHA><WORD>*)/
 
 point_object: /(<STAR> <LOWER><WORD>*)/
 
-string_object: <quoted_string>
+string_object: quoted_string
 
-number_object: <number>
+number_object: number
 
 transform_object:
-    <transform_name>
-    <transform_argument_list>?
+    transform_name
+    transform_argument_list?
 
-transform_name: <user_transform> | <core_transform>
+transform_name: user_transform | core_transform
 
 user_transform: /(<LOWER><WORD>*)/
 
@@ -131,73 +131,73 @@ call_indicator: /(: <DOT> ~ | ~ <DOT> )/
 
 transform_argument_list:
     / <LPAREN> ~ /
-    <transform_argument>* % / ~ <COMMA> ~ /
+    transform_argument* % / ~ <COMMA> ~ /
     / ~ <RPAREN> /
 
-transform_argument: <code_expression>
+transform_argument: code_expression
 
 assertion_call_test: / <call_indicator> (: EQ|OK|HAS ) /
 
 assertion_call:
-    +<assertion_eq> |
-    +<assertion_ok> |
-    +<assertion_has>
+    +assertion_eq |
+    +assertion_ok |
+    +assertion_has
 
 assertion_eq:
-    +<assertion_operator_eq> |
-    +<assertion_function_eq>
+    +assertion_operator_eq |
+    +assertion_function_eq
 
 assertion_operator_eq:
     / ~~ <EQUAL><EQUAL> ~~ /
-    <code_expression>
+    code_expression
 
 assertion_function_eq:
     / <call_indicator> EQ <LPAREN> /
-    <code_expression>
+    code_expression
     / <RPAREN> /
 
-assertion_ok: <assertion_function_ok>
+assertion_ok: assertion_function_ok
 
 assertion_function_ok: / <call_indicator> (OK) <empty_parens>? /
 
-assertion_has: +<assertion_operator_has> | +<assertion_function_has>
+assertion_has: +assertion_operator_has | +assertion_function_has
 
 assertion_operator_has:
     / ~~ <TILDE><TILDE> ~~ /
-    <code_expression>
+    code_expression
 
 assertion_function_has:
     / <call_indicator> HAS <LPAREN> /
-    <code_expression>
+    code_expression
     / <RPAREN> /
 
 empty_parens: /(: <LPAREN> ~ <RPAREN> )/
 
 # TestML Data Section
-data_section: <data_block>*
+data_section: data_block*
 
 data_block:
-    <block_header>
-    .( <blank_line> | <comment> )*
-    <block_point>*
+    block_header
+    .( blank_line | comment )*
+    block_point*
 
 block_header:
-    <block_marker>
-    ( / <BLANK>+ / <block_label> )?
+    block_marker
+    ( / <BLANK>+ / block_label )?
     / <BLANK>* <EOL> /
 
 block_marker: / <EQUAL><EQUAL><EQUAL> /
 
-block_label: <unquoted_string>
+block_label: unquoted_string
 
-block_point: <lines_point> | <phrase_point>
+block_point: lines_point | phrase_point
 
 lines_point:
-    <point_marker>
+    point_marker
     / <BLANK>+ /
-    <point_name>
+    point_name
     / <BLANK>* <EOL> /
-    <point_lines>
+    point_lines
 
 point_lines: /(
     (:
@@ -210,11 +210,11 @@ point_lines: /(
 )/
 
 phrase_point:
-    <point_marker>
+    point_marker
     / <BLANK>+ /
-    <point_name>
+    point_name
     / <COLON> <BLANK> /
-    <point_phrase>
+    point_phrase
     / <EOL> /
     /(:
         <comment> |
@@ -233,4 +233,4 @@ user_point_name:  / <LOWER><WORD>* /
 
 core_point_name:  / <UPPER><WORD>* /
 
-point_phrase: <unquoted_string>
+point_phrase: unquoted_string
