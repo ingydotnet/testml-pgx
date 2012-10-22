@@ -1,5 +1,5 @@
 {
-   "+top" : "testml_document",
+   "+toprule" : "testml_document",
    "assertion_call" : {
       ".any" : [
          {
