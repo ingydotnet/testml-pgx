@@ -50,7 +50,7 @@ assignment_statement:
   - .ref: variable_name
   - .rgx: \s+=\s+
   - .ref: code_expression
-  - .ref: semicolon
+  - .ref: ending
 blank_line:
   .rgx: '[\ \t]*\r?\n'
 block_header:
@@ -69,8 +69,27 @@ block_point:
   .any:
   - .ref: lines_point
   - .ref: phrase_point
+call_argument:
+  .ref: code_expression
+call_argument_list:
+  .all:
+  - .rgx: \((?:[\ \t]|\r?\n|\#.*\r?\n)*
+  - +min: 0
+    .ref: call_argument
+    .sep:
+      .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
+  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
 call_indicator:
   .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)
+call_name:
+  .any:
+  - .ref: user_call
+  - .ref: core_call
+call_object:
+  .all:
+  - .ref: call_name
+  - +max: 1
+    .ref: call_argument_list
 code_expression:
   .all:
   - .ref: code_object
@@ -82,7 +101,7 @@ code_object:
   - .ref: point_object
   - .ref: string_object
   - .ref: number_object
-  - .ref: transform_object
+  - .ref: call_object
 code_section:
   +min: 0
   .any:
@@ -94,10 +113,10 @@ code_statement:
   - .ref: code_expression
   - +max: 1
     .ref: assertion_call
-  - .ref: semicolon
+  - .ref: ending
 comment:
   .rgx: \#.*\r?\n
-core_transform:
+core_call:
   .rgx: ([A-Z]\w*)
 data_block:
   .all:
@@ -114,6 +133,8 @@ data_section:
   .ref: data_block
 double_quoted_string:
   .rgx: (?:"((?:[^\n\\"]|\\"|\\\\|\\[0nt])*?)")
+ending:
+  .rgx: (?:;|\r?\n)
 function_object:
   .all:
   - +max: 1
@@ -174,10 +195,6 @@ quoted_string:
   .any:
   - .ref: single_quoted_string
   - .ref: double_quoted_string
-semicolon:
-  .any:
-  - .rgx: ;
-  - .err: You seem to be missing a semicolon
 single_quoted_string:
   .rgx: (?:'((?:[^\n\\']|\\'|\\\\)*?)')
 string_object:
@@ -187,25 +204,6 @@ testml_document:
   - .ref: code_section
   - +max: 1
     .ref: data_section
-transform_argument:
-  .ref: code_expression
-transform_argument_list:
-  .all:
-  - .rgx: \((?:[\ \t]|\r?\n|\#.*\r?\n)*
-  - +min: 0
-    .ref: transform_argument
-    .sep:
-      .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
-  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
-transform_name:
-  .any:
-  - .ref: user_transform
-  - .ref: core_transform
-transform_object:
-  .all:
-  - .ref: transform_name
-  - +max: 1
-    .ref: transform_argument_list
 unit_call:
   .all:
   - +asr: -1
@@ -214,7 +212,7 @@ unit_call:
   - .ref: code_object
 unquoted_string:
   .rgx: ([^\ \t\n\#](?:[^\n\#]*[^\ \t\n\#])?)
-user_transform:
+user_call:
   .rgx: ([a-z]\w*)
 variable_name:
   .rgx: ([a-zA-Z]\w*)
