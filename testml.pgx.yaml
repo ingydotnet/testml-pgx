@@ -79,6 +79,12 @@ call_argument_list:
     .sep:
       .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
   - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
+call_call:
+  .all:
+  - +asr: -1
+    .ref: assertion_call_test
+  - .ref: call_indicator
+  - .ref: code_object
 call_indicator:
   .rgx: (?:\.(?:[\ \t]|\r?\n|\#.*\r?\n)*|(?:[\ \t]|\r?\n|\#.*\r?\n)*\.)
 call_name:
@@ -94,7 +100,7 @@ code_expression:
   .all:
   - .ref: code_object
   - +min: 0
-    .ref: unit_call
+    .ref: call_call
 code_object:
   .any:
   - .ref: function_object
@@ -204,12 +210,6 @@ testml_document:
   - .ref: code_section
   - +max: 1
     .ref: data_section
-unit_call:
-  .all:
-  - +asr: -1
-    .ref: assertion_call_test
-  - .ref: call_indicator
-  - .ref: code_object
 unquoted_string:
   .rgx: ([^\ \t\n\#](?:[^\n\#]*[^\ \t\n\#])?)
 user_call:

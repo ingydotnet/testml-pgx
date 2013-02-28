@@ -77,9 +77,9 @@ ending: /(: <SEMI> | <EOL> )/
 
 code_expression:
     code_object
-    unit_call*
+    call_call*
 
-unit_call:
+call_call:
     !assertion_call_test
     call_indicator
     code_object
