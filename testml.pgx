@@ -104,7 +104,7 @@ function_signature:
     function_variables?
     /~<RPAREN>/
 
-function_variables: 
+function_variables:
     function_variable+ % / ~ <COMMA> ~ /
 
 function_variable: /(<ALPHA><WORD>*)/
