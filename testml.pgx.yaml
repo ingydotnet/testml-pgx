@@ -1,5 +1,10 @@
 ---
++grammar: testml
++include: atom
 +toprule: testml_document
++version: 0.0.1
+__:
+  .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+
 assertion_call:
   .any:
   - -wrap: 1
@@ -53,14 +58,16 @@ assignment_statement:
   - .ref: ending
 blank_line:
   .rgx: '[\ \t]*\r?\n'
+blanks:
+  .rgx: '[\ \t]+'
 block_header:
   .all:
   - .ref: block_marker
   - +max: 1
     .all:
-    - .rgx: '[\ \t]+'
+    - .ref: blanks
     - .ref: block_label
-  - .rgx: '[\ \t]*\r?\n'
+  - .ref: blank_line
 block_label:
   .ref: unquoted_string
 block_marker:
@@ -111,7 +118,7 @@ code_object:
 code_section:
   +min: 0
   .any:
-  - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+
+  - .ref: __
   - .ref: assignment_statement
   - .ref: code_statement
 code_statement:
@@ -153,7 +160,7 @@ function_object:
   - .ref: function_start
   - +min: 0
     .any:
-    - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)+
+    - .ref: __
     - .ref: assignment_statement
     - .ref: code_statement
   - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\}
@@ -175,9 +182,9 @@ function_variables:
 lines_point:
   .all:
   - .ref: point_marker
-  - .rgx: '[\ \t]+'
+  - .ref: blanks
   - .ref: point_name
-  - .rgx: '[\ \t]*\r?\n'
+  - .ref: blank_line
   - .ref: point_lines
 number:
   .rgx: ([0-9]+)
@@ -186,7 +193,7 @@ number_object:
 phrase_point:
   .all:
   - .ref: point_marker
-  - .rgx: '[\ \t]+'
+  - .ref: blanks
   - .ref: point_name
   - .rgx: :[\ \t]
   - .ref: point_phrase

@@ -1,5 +1,11 @@
 {
+   "+grammar" : "testml",
+   "+include" : "atom",
    "+toprule" : "testml_document",
+   "+version" : "0.0.1",
+   "__" : {
+      ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
+   },
    "assertion_call" : {
       ".any" : [
          {
@@ -114,6 +120,9 @@
    "blank_line" : {
       ".rgx" : "[\\ \\t]*\\r?\\n"
    },
+   "blanks" : {
+      ".rgx" : "[\\ \\t]+"
+   },
    "block_header" : {
       ".all" : [
          {
@@ -123,7 +132,7 @@
             "+max" : 1,
             ".all" : [
                {
-                  ".rgx" : "[\\ \\t]+"
+                  ".ref" : "blanks"
                },
                {
                   ".ref" : "block_label"
@@ -131,7 +140,7 @@
             ]
          },
          {
-            ".rgx" : "[\\ \\t]*\\r?\\n"
+            ".ref" : "blank_line"
          }
       ]
    },
@@ -243,7 +252,7 @@
       "+min" : 0,
       ".any" : [
          {
-            ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
+            ".ref" : "__"
          },
          {
             ".ref" : "assignment_statement"
@@ -330,7 +339,7 @@
             "+min" : 0,
             ".any" : [
                {
-                  ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)+"
+                  ".ref" : "__"
                },
                {
                   ".ref" : "assignment_statement"
@@ -378,13 +387,13 @@
             ".ref" : "point_marker"
          },
          {
-            ".rgx" : "[\\ \\t]+"
+            ".ref" : "blanks"
          },
          {
             ".ref" : "point_name"
          },
          {
-            ".rgx" : "[\\ \\t]*\\r?\\n"
+            ".ref" : "blank_line"
          },
          {
             ".ref" : "point_lines"
@@ -403,7 +412,7 @@
             ".ref" : "point_marker"
          },
          {
-            ".rgx" : "[\\ \\t]+"
+            ".ref" : "blanks"
          },
          {
             ".ref" : "point_name"
