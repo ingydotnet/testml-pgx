@@ -235,4 +235,4 @@ core-point-name:  / UPPER WORD* /
 
 point-phrase: unquoted-string
 
-# vim: sw=2:
+# vim: sw=2 lisp:
