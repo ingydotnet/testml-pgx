@@ -81,10 +81,14 @@ call_argument:
 call_argument_list:
   .all:
   - .rgx: \((?:[\ \t]|\r?\n|\#.*\r?\n)*
-  - +min: 0
-    .ref: call_argument
-    .sep:
-      .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
+  - +max: 1
+    -flat: 1
+    .all:
+    - .ref: call_argument
+    - +min: 0
+      .all:
+      - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
+      - .ref: call_argument
   - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*\)
 call_call:
   .all:
@@ -175,10 +179,13 @@ function_start:
 function_variable:
   .rgx: ([a-zA-Z]\w*)
 function_variables:
-  +min: 1
-  .ref: function_variable
-  .sep:
-    .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
+  -flat: 1
+  .all:
+  - .ref: function_variable
+  - +min: 0
+    .all:
+    - .rgx: (?:[\ \t]|\r?\n|\#.*\r?\n)*,(?:[\ \t]|\r?\n|\#.*\r?\n)*
+    - .ref: function_variable
 lines_point:
   .all:
   - .ref: point_marker
