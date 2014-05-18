@@ -170,13 +170,13 @@
          },
          {
             "+max" : 1,
-            "-flat" : 1,
             ".all" : [
                {
                   ".ref" : "call_argument"
                },
                {
                   "+min" : 0,
+                  "-flat" : 1,
                   ".all" : [
                      {
                         ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
@@ -388,13 +388,13 @@
       ".rgx" : "([a-zA-Z]\\w*)"
    },
    "function_variables" : {
-      "-flat" : 1,
       ".all" : [
          {
             ".ref" : "function_variable"
          },
          {
             "+min" : 0,
+            "-flat" : 1,
             ".all" : [
                {
                   ".rgx" : "(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*,(?:[\\ \\t]|\\r?\\n|\\#.*\\r?\\n)*"
