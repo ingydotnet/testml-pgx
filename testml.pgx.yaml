@@ -207,7 +207,7 @@ phrase_point:
   - .rgx: \r?\n
   - .rgx: (?:\#.*\r?\n|[\ \t]*\r?\n)*
 point_lines:
-  .rgx: ((?:(?!===|\-\-\-).*\r?\n)*)
+  .rgx: ((?:(?!(?:===|\-\-\-)\ \w).*\r?\n)*)
 point_marker:
   .rgx: \-\-\-
 point_name:
